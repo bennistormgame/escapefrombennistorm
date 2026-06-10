@@ -1,0 +1,8 @@
+{
+  // Cloudflare Workers static-assets config — serves this folder as a static site.
+  "name": "escapefrombennistorm",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "."
+  }
+}
