@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wibbles &amp; Wobbles — Escape from Bennistorm</title>
+<meta name="description" content="A retro arcade brawler with a crime-comedy soul. 100 levels, 34 playable crew, five neon worlds, one way out. Wishlist Wibbles &amp; Wobbles — Escape from Bennistorm."/>
+<link rel="icon" type="image/png" href="assets/logo.png"/>
+<meta name="theme-color" content="#0a0612"/>
+<!-- Open Graph / social share (NOTE: set og:image + og:url to absolute https URLs at deploy) -->
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Wibbles &amp; Wobbles — Escape from Bennistorm"/>
+<meta property="og:description" content="Grab your squad, grab the loot, get out before The Man finds you. 100 levels · 34 crew · 19 arcade cabinets."/>
+<meta property="og:image" content="assets/og.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Wibbles &amp; Wobbles — Escape from Bennistorm"/>
+<meta name="twitter:description" content="A retro arcade brawler with a crime-comedy soul. Wishlist now."/>
+<meta name="twitter:image" content="assets/og.jpg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@700&family=Lilita+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0612; --bg2:#130b22; --panel:#160d28;
+  --magenta:#ff4fa3; --cyan:#34d8de; --purple:#a24fc0; --blue:#5ec8ff;
+  --gold:#ffd24a; --ink:#f6eefc; --mut:#b9a6d6;
+  --rim:0 0 0 2px rgba(162,79,192,.45), 0 0 0 4px rgba(52,216,222,.25);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Fredoka',system-ui,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+section{position:relative}
+.eyebrow{font-family:'JetBrains Mono';letter-spacing:4px;font-size:12px;text-transform:uppercase;color:var(--cyan)}
+h2.big{font-family:'Bungee';font-size:clamp(28px,5vw,52px);line-height:1.02;margin:10px 0 14px}
+.grad{background:linear-gradient(90deg,var(--magenta),var(--purple),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(16px,2vw,20px);color:#d9cdf0;max-width:720px;line-height:1.55}
+
+/* floating jelly blobs bg */
+.blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(40px);opacity:.22;animation:drift 18s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-30px) scale(1.15)}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 26px;background:rgba(10,6,18,.66);backdrop-filter:blur(12px);border-bottom:1px solid rgba(162,79,192,.25)}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Bungee';font-size:14px}
+.brand img{width:34px;height:34px;border-radius:9px}
+.navlinks{display:flex;gap:24px;font-weight:600;font-size:15px;color:var(--mut)}
+.navlinks a:hover{color:var(--cyan)}
+.btn{font-family:'Bungee';font-size:13px;border:none;cursor:pointer;border-radius:12px;padding:12px 20px;display:inline-flex;align-items:center;gap:8px;transition:transform .15s, box-shadow .15s}
+.btn:hover{transform:translateY(-3px) scale(1.03)}
+.btn-candy{background:linear-gradient(180deg,#ffd874,#ff9e1f);color:#3a1d00;box-shadow:0 6px 0 #b96d00,0 12px 22px rgba(255,158,31,.4)}
+.btn-neon{background:transparent;color:var(--cyan);box-shadow:inset 0 0 0 2px var(--cyan)}
+.btn-neon:hover{background:rgba(52,216,222,.12)}
+.btn-pink{background:linear-gradient(180deg,#ff7ac0,#ff2e93);color:#fff;box-shadow:0 6px 0 #b0186a,0 12px 22px rgba(255,46,147,.4)}
+
+/* HERO */
+header.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;z-index:1}
+.hero-bg{position:absolute;inset:0;background:url('assets/worlds/strip.jpg') center/cover no-repeat;transform:scale(1.05)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse at 50% 24%,rgba(10,6,18,.1),rgba(10,6,18,.82) 72%),
+  linear-gradient(180deg,rgba(10,6,18,.5),rgba(10,6,18,.15) 35%,var(--bg) 99%)}
+.hero-inner{position:relative;z-index:3;padding-top:70px;width:100%}
+.wordmark{width:min(680px,86vw);filter:drop-shadow(0 8px 30px rgba(255,79,163,.45));animation:wob 5s ease-in-out infinite}
+@keyframes wob{0%,100%{transform:rotate(-1deg) scale(1)}50%{transform:rotate(1deg) scale(1.02)}}
+/* WW LOGO — pill lockup, matches the game home screen (Wayne 2026-06-10) */
+.wwlogo{font-family:'Lilita One','Arial Black',sans-serif;font-size:clamp(30px,6.4vw,60px);letter-spacing:2px;line-height:1.34;text-align:center;animation:wob 5s ease-in-out infinite}
+.wwlogo .wwPill{display:inline-block;padding:4px 20px;border-radius:999px;border:3px solid #ffd64a;line-height:1;color:#fff;-webkit-text-stroke:1.6px #1a0a2a;text-shadow:0 2px 0 rgba(0,0,0,.4),0 0 6px rgba(0,0,0,.3);box-shadow:0 5px 0 rgba(0,0,0,.4),0 0 26px rgba(255,200,50,.55),inset 0 3px 8px rgba(255,255,255,.5),inset 0 -6px 10px rgba(0,0,0,.35);margin:4px 0}
+.wwlogo .wibPill{background:linear-gradient(180deg,#9bfcff 0%,#15c6e6 55%,#0a7a92 100%)}
+.wwlogo .wobPill{background:linear-gradient(180deg,#ffa6ea 0%,#ff3fc4 55%,#b81f8e 100%)}
+.wwlogo .wwAnd{display:inline-block;color:#ffd64a;font-size:.4em;letter-spacing:5px;-webkit-text-stroke:1px #1a0a2a;text-shadow:0 2px 0 rgba(0,0,0,.4),0 0 12px rgba(255,200,50,.6);margin:3px 0}
+.strap{font-family:'Bungee';font-size:clamp(13px,2vw,18px);letter-spacing:2px;color:var(--gold);margin-top:14px;text-shadow:0 2px 0 rgba(0,0,0,.5)}
+.sub{max-width:600px;margin:16px auto 22px;font-size:clamp(15px,2vw,19px);color:#e7dcf6}
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.platrow{margin-top:18px;display:flex;gap:20px;justify-content:center;color:var(--mut);font-size:13px;font-family:'JetBrains Mono'}
+.platrow b{color:#fff}
+/* hero crew lineup */
+.crew-line{position:relative;z-index:3;display:flex;justify-content:center;align-items:flex-end;gap:0;margin-top:8px;height:230px;width:100%}
+.crew-line img{height:200px;margin:0 -14px;filter:drop-shadow(0 12px 16px rgba(0,0,0,.5));animation:bob 2.8s ease-in-out infinite;transition:transform .2s}
+.crew-line img:hover{transform:translateY(-18px) scale(1.08) rotate(-2deg);z-index:5}
+.crew-line img:nth-child(2){animation-delay:.3s}.crew-line img:nth-child(3){animation-delay:.6s}
+.crew-line img:nth-child(4){animation-delay:.9s}.crew-line img:nth-child(5){animation-delay:1.2s}.crew-line img:nth-child(6){animation-delay:1.5s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.scrollcue{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:4;color:var(--cyan);font-family:'JetBrains Mono';font-size:12px;letter-spacing:2px;animation:bob 2s infinite}
+
+/* sections shell */
+.band{position:relative;z-index:1;background:var(--bg);padding:96px 0}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* HOOK stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+.stat{border:1px solid rgba(162,79,192,.3);border-radius:18px;padding:26px 14px;text-align:center;background:linear-gradient(180deg,rgba(162,79,192,.08),rgba(52,216,222,.04));transition:transform .2s}
+.stat:hover{transform:translateY(-6px)}
+.stat .n{font-family:'Bungee';font-size:42px;background:linear-gradient(180deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .l{font-family:'JetBrains Mono';font-size:12px;color:var(--mut);margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+
+/* WORLDS — full-bleed parallax */
+.world{position:relative;height:88vh;min-height:560px;display:flex;align-items:flex-end;overflow:hidden}
+.world .wbg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.04)}
+.world .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,6,18,.55) 0%,rgba(10,6,18,.1) 30%,rgba(10,6,18,.55) 70%,var(--bg) 100%)}
+.world .winner{position:relative;z-index:3;width:100%;max-width:1240px;margin:0 auto;padding:0 28px 70px}
+.world .lvl{font-family:'JetBrains Mono';color:var(--gold);font-size:13px;letter-spacing:2px}
+.world h3{font-family:'Bungee';font-size:clamp(32px,6vw,72px);line-height:1;margin:8px 0;text-shadow:0 4px 18px rgba(0,0,0,.6)}
+.world p{max-width:520px;color:#ece2fb;font-size:clamp(15px,2vw,19px);line-height:1.5;text-shadow:0 2px 6px rgba(0,0,0,.7)}
+.world .pal{display:flex;gap:8px;margin-top:14px}
+.world .pal i{width:26px;height:26px;border-radius:50%;display:block;box-shadow:0 0 12px currentColor}
+.world .chibi{position:absolute;bottom:0;right:6%;height:62%;z-index:3;filter:drop-shadow(0 16px 22px rgba(0,0,0,.6));animation:bob 3.4s ease-in-out infinite}
+@media(max-width:820px){.world .chibi{height:36%;right:2%;opacity:.85}.world .wbg{background-attachment:scroll}}
+
+/* SQUAD */
+.squad{background:linear-gradient(180deg,var(--bg),var(--bg2))}
+.sgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:40px}
+.sc{position:relative;border-radius:18px;padding:14px 8px 10px;text-align:center;background:radial-gradient(circle at 50% 35%,rgba(162,79,192,.22),rgba(52,216,222,.05) 70%,transparent);cursor:pointer;transition:transform .18s}
+.sc img{width:100%;height:140px;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(0,0,0,.5));transition:transform .2s}
+.sc:hover{transform:translateY(-8px)}
+.sc:hover img{transform:scale(1.12) rotate(-3deg)}
+.sc .nm{font-family:'Bungee';font-size:10px;margin-top:6px;color:#fff;letter-spacing:.3px}
+@media(max-width:1024px){.sgrid{grid-template-columns:repeat(4,1fr)}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.sgrid{grid-template-columns:repeat(3,1fr)}.navlinks{display:none}}
+
+/* STORY */
+.story{background:var(--bg2)}
+.chapters{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:44px}
+.ch{border:1px solid rgba(52,216,222,.25);border-radius:18px;padding:22px 18px;background:linear-gradient(180deg,rgba(255,79,163,.06),rgba(52,216,222,.04));position:relative;transition:transform .2s}
+.ch:hover{transform:translateY(-6px)}
+.ch .no{font-family:'Bungee';font-size:30px;color:var(--magenta);opacity:.6}
+.ch h4{font-family:'Bungee';font-size:15px;margin:6px 0 8px;color:var(--cyan)}
+.ch p{color:var(--mut);font-size:14px;line-height:1.5}
+@media(max-width:900px){.chapters{grid-template-columns:1fr 1fr}}
+
+/* SOUNDTRACK */
+.ost{background:linear-gradient(180deg,var(--bg2),var(--bg))}
+.tracks{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.trk{font-family:'JetBrains Mono';font-size:12px;color:var(--cyan);border:1px solid rgba(52,216,222,.4);border-radius:999px;padding:9px 16px;transition:transform .15s}
+.trk:hover{transform:translateY(-3px) scale(1.05);background:rgba(52,216,222,.12)}
+
+/* BIG ASK */
+.ask{text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(255,79,163,.16),transparent 60%),var(--bg)}
+.ask h2{font-family:'Bungee';font-size:clamp(30px,5vw,54px)}
+.form{display:flex;gap:10px;justify-content:center;max-width:520px;margin:24px auto 14px;flex-wrap:wrap}
+.form input{flex:1;min-width:240px;padding:14px 16px;border-radius:12px;border:1px solid rgba(162,79,192,.4);background:rgba(255,255,255,.04);color:var(--ink);font-family:'JetBrains Mono';font-size:14px}
+.promo{font-family:'JetBrains Mono';color:var(--gold);font-size:13px;margin-top:8px}
+
+/* IN ACTION diorama */
+.action{background:var(--bg)}
+.screen{position:relative;width:100%;aspect-ratio:16/9;max-height:72vh;border-radius:22px;overflow:hidden;box-shadow:0 0 0 2px rgba(52,216,222,.5),0 0 60px rgba(255,79,163,.22),0 30px 60px rgba(0,0,0,.5);margin-top:30px}
+.screen .abg{position:absolute;inset:-5%;background-size:cover;background-position:center;animation:pan 26s ease-in-out infinite alternate}
+@keyframes pan{from{transform:translateX(-2.5%) scale(1.08)}to{transform:translateX(2.5%) scale(1.08)}}
+.screen .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 62%,transparent 42%,rgba(10,6,18,.55))}
+.runner{position:absolute;bottom:7%;height:34%;filter:drop-shadow(0 12px 14px rgba(0,0,0,.55));animation:run 8s linear infinite}
+.runner .body{height:100%;animation:squash .5s ease-in-out infinite;transform-origin:bottom center}
+@keyframes run{0%{left:-12%;transform:scaleX(1)}47%{left:82%;transform:scaleX(1)}50%{left:82%;transform:scaleX(-1)}97%{left:-12%;transform:scaleX(-1)}100%{left:-12%;transform:scaleX(1)}}
+@keyframes squash{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-18px) scale(.96,1.05)}}
+.token{position:absolute;font-size:28px;animation:floaty 3.4s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(255,210,74,.6))}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-18px) rotate(7deg)}}
+.hud{position:absolute;top:14px;left:16px;font-family:'Bungee';font-size:13px;color:#fff;text-shadow:0 2px 6px #000}
+.hud .score{color:var(--gold)}
+.screen .tag{position:absolute;bottom:14px;right:16px;font-family:'JetBrains Mono';font-size:11px;color:var(--cyan);background:rgba(10,6,18,.6);padding:6px 10px;border-radius:8px}
+/* MODES */
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.mode{position:relative;border-radius:20px;padding:26px 22px;background:linear-gradient(165deg,rgba(255,79,163,.12),rgba(52,216,222,.06));border:1px solid rgba(162,79,192,.3);overflow:hidden;transition:transform .2s}
+.mode:hover{transform:translateY(-6px)}
+.mode .ic{font-size:34px}
+.mode h4{font-family:'Bungee';font-size:18px;margin:10px 0 8px}
+.mode p{color:var(--mut);font-size:14px;line-height:1.5}
+.mode .pill{position:absolute;top:16px;right:16px;font-family:'JetBrains Mono';font-size:10px;padding:5px 9px;border-radius:999px;letter-spacing:1px}
+.pill.live{background:rgba(52,216,222,.18);color:var(--cyan)}
+.pill.soon{background:rgba(255,210,74,.16);color:var(--gold)}
+@media(max-width:900px){.mgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.mgrid{grid-template-columns:1fr}}
+.sc .tap{font-family:'JetBrains Mono';font-size:8px;color:var(--cyan);margin-top:3px;opacity:0;transition:opacity .2s}
+.sc:hover .tap{opacity:.85}
+.modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(6,3,12,.8);backdrop-filter:blur(8px);padding:24px}
+.modal.open{display:flex}
+.mcard{position:relative;width:min(420px,92vw);background:linear-gradient(180deg,#1b1030,#0e0820);border-radius:24px;border:1px solid rgba(162,79,192,.5);box-shadow:0 0 0 2px rgba(52,216,222,.25),0 30px 80px rgba(0,0,0,.6);padding:26px;text-align:center;animation:pop .32s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{from{transform:scale(.8) translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.mcard .ph{height:240px;display:flex;align-items:flex-end;justify-content:center}
+.mcard .ph img{height:100%;filter:drop-shadow(0 16px 20px rgba(0,0,0,.55))}
+.mcard .nm{font-family:'Bungee';font-size:24px;margin-top:10px}
+.mcard .sp{display:inline-block;font-family:'JetBrains Mono';font-size:12px;font-weight:700;letter-spacing:1px;color:#0a0612;background:linear-gradient(90deg,var(--cyan),var(--magenta));padding:6px 14px;border-radius:999px;margin:10px 0}
+.mcard .ln{color:#d9cdf0;font-size:15px;line-height:1.55}
+.mcard .x{position:absolute;top:10px;right:16px;font-family:'Bungee';font-size:16px;color:var(--mut);cursor:pointer;border:none;background:none}
+.mcard .x:hover{color:var(--magenta)}
+/* VILLAINS */
+.villains{position:relative;overflow:hidden}
+.villains .vbg{position:absolute;inset:0;background:url('assets/worlds/penthouse.jpg') center/cover;opacity:.5}
+.villains .vbg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--bg) 0%,rgba(10,6,18,.65) 40%,rgba(22,4,8,.85) 100%)}
+.villains .wrap{position:relative;z-index:2}
+.villains .eyebrow{color:#ff6a6a}
+.boss{display:flex;align-items:center;gap:34px;margin-top:30px;flex-wrap:wrap;justify-content:center}
+.boss img{height:300px;filter:drop-shadow(0 0 30px rgba(255,60,60,.45)) drop-shadow(0 16px 20px rgba(0,0,0,.6));animation:bob 4s ease-in-out infinite}
+.boss .bi{max-width:440px}
+.boss .bt{font-family:'JetBrains Mono';color:#ff6a6a;font-size:12px;letter-spacing:3px}
+.boss .bn{font-family:'Bungee';font-size:clamp(30px,5vw,48px);line-height:1;margin:6px 0 12px;color:#fff;text-shadow:0 0 24px rgba(255,60,60,.4)}
+.boss .bd{color:#eccccc;font-size:16px;line-height:1.55}
+.vgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:46px}
+.vc{position:relative;border-radius:16px;padding:14px 8px 10px;text-align:center;background:linear-gradient(180deg,rgba(24,8,16,.92),rgba(34,6,10,.8)),radial-gradient(circle at 50% 32%,rgba(255,80,80,.28),transparent 70%);border:1px solid rgba(255,90,90,.22);cursor:pointer;transition:transform .18s,box-shadow .18s}
+.vc:hover{box-shadow:0 0 22px rgba(255,70,70,.25)}
+.vc img{width:100%;height:120px;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.5));transition:transform .2s}
+.vc:hover{transform:translateY(-8px)}.vc:hover img{transform:scale(1.12) rotate(3deg)}
+.vc .nm{font-family:'Bungee';font-size:9px;margin-top:6px;color:#ffb3b3}
+.vc .rl{font-family:'JetBrains Mono';font-size:8px;color:#ff8a5c;margin-top:2px}
+.mcard.vil{border-color:rgba(255,90,90,.55);box-shadow:0 0 0 2px rgba(255,160,60,.25),0 30px 80px rgba(0,0,0,.6)}
+.mcard.vil .sp{background:linear-gradient(90deg,#ff5a5a,#ffa83c);color:#1a0606}
+@media(max-width:900px){.vgrid{grid-template-columns:repeat(3,1fr)}.boss .bi{text-align:center}}
+/* STORY CLIPS */
+.clipgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.clip{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;background:#160d28;border:1px solid rgba(162,79,192,.3);aspect-ratio:16/10;transition:transform .18s}
+.clip:hover{transform:translateY(-6px)}
+.clip .thumb{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.92}
+.clip .scrim2{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,6,18,.15),rgba(10,6,18,.88))}
+.clip .pl{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:rgba(255,79,163,.94);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;box-shadow:0 0 24px rgba(255,79,163,.6);transition:transform .15s}
+.clip:hover .pl{transform:translate(-50%,-50%) scale(1.14)}
+.clip .ci{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:12px 14px;text-align:left}
+.clip .ci .t{font-family:'Bungee';font-size:13px}
+.clip .ci .s{font-family:'JetBrains Mono';font-size:10px;color:var(--cyan);margin-top:3px}
+.clip.locked{background:repeating-linear-gradient(45deg,#100819,#100819 10px,#160d28 10px,#160d28 20px)}
+.clip.locked .lk{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:var(--mut)}
+.clip.locked .lk .pg{font-family:'Bungee';font-size:12px;color:var(--gold)}
+.clip.locked .lk .lvl{font-family:'JetBrains Mono';font-size:10px}
+@media(max-width:820px){.clipgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.clipgrid{grid-template-columns:1fr}}
+/* SOUNDBOARD / WHO IS DENNY */
+.denny{text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(52,216,222,.14),transparent 60%),var(--bg)}
+.six{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+.sixb{position:relative;width:122px;border-radius:16px;padding:12px 6px 10px;background:radial-gradient(circle at 50% 35%,rgba(52,216,222,.2),transparent 70%);border:1px solid rgba(52,216,222,.35);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.sixb:hover{transform:translateY(-8px) scale(1.05);box-shadow:0 0 26px rgba(52,216,222,.4)}
+.sixb img{width:100%;height:98px;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.5))}
+.sixb .n{font-family:'Bungee';font-size:9px;margin-top:4px;color:#bdf}
+.denny .hint{margin-top:20px;font-family:'JetBrains Mono';font-size:12px;color:var(--gold);animation:dpulse 2s infinite}
+@keyframes dpulse{0%,100%{opacity:.55}50%{opacity:1}}
+/* GAME MODAL (iframe popup) */
+.gmodal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(4,2,10,.93);backdrop-filter:blur(6px);padding:18px}
+.gmodal.open{display:flex}
+.gmwrap{position:relative;width:min(440px,96vw);height:min(86vh,840px);border-radius:18px;overflow:hidden;box-shadow:0 0 0 2px rgba(52,216,222,.45),0 30px 80px rgba(0,0,0,.7);background:#05030c}
+.gmwrap iframe{width:100%;height:100%;border:0;display:block}
+.gmclose{position:absolute;top:0;right:0;z-index:2;background:rgba(255,46,147,.96);color:#fff;border:none;font-family:'Bungee';font-size:13px;padding:8px 13px;border-radius:0 0 0 12px;cursor:pointer}
+.gmtitle{position:absolute;top:0;left:0;z-index:2;background:rgba(10,6,18,.72);color:var(--cyan);font-family:'JetBrains Mono';font-size:10px;padding:7px 12px;border-radius:0 0 12px 0}
+/* MOBILE polish */
+@media(max-width:600px){
+  .band{padding:60px 0}
+  .wrap{padding:0 18px}
+  .hero-inner{padding-top:62px}
+  .crew-line{height:148px;margin-top:10px}
+  .crew-line img{height:104px;margin:0 -10px}
+  .platrow{gap:12px;flex-wrap:wrap;justify-content:center}
+  .cta-row .btn{padding:11px 16px;font-size:12px}
+  .world{height:74vh;min-height:440px}
+  .world .winner{padding-bottom:44px}
+  .world p{max-width:90%}
+  .world .chibi{height:30%;opacity:.8}
+  .stats{grid-template-columns:1fr 1fr}
+  .boss{gap:16px}.boss img{height:210px}
+  .boss .bi{text-align:center}
+  .mcard .ph{height:200px}
+  .screen{max-height:60vh}
+}
+footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut);font-size:13px;background:var(--bg)}
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+.foot .badges{display:flex;gap:10px}
+.foot .badges span{border:1px solid rgba(52,216,222,.35);border-radius:9px;padding:8px 12px;font-family:'JetBrains Mono';font-size:11px}
+.credit{font-family:'JetBrains Mono';font-size:11px;color:#7d6aa0}
+</style>
+</head>
+<body>
+
+<div class="blobs">
+  <div class="blob" style="width:380px;height:380px;background:#ff4fa3;left:-60px;top:10%"></div>
+  <div class="blob" style="width:420px;height:420px;background:#34d8de;right:-80px;top:40%;animation-delay:4s"></div>
+  <div class="blob" style="width:340px;height:340px;background:#a24fc0;left:30%;top:75%;animation-delay:8s"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="brand"><img src="assets/logo.png" alt=""/> WIBBLES &amp; WOBBLES</div>
+  <div class="navlinks">
+    <a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#story">Story</a><a href="#ost">Sounds</a>
+  </div>
+  <button class="btn btn-candy">★ WISHLIST</button>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner wrap">
+    <div class="wwlogo" role="img" aria-label="Wibbles and Wobbles">
+      <span class="wwPill wibPill">WIBBLES</span><br>
+      <span class="wwAnd">AND</span><br>
+      <span class="wwPill wobPill">WOBBLES</span>
+    </div>
+    <div class="strap">EPISODE ONE · ESCAPE FROM BENNISTORM</div>
+    <p class="sub">Bennistorm doesn't let people leave. Grab your squad, grab the loot, and get out before The Man finds you — a retro arcade brawler with a crime-comedy soul.</p>
+    <div class="cta-row">
+      <button class="btn btn-candy">★ WISHLIST ON STEAM</button>
+      <button class="btn btn-neon">Pre-register on Play</button>
+      <button class="btn btn-neon">Coming to iOS</button>
+    </div>
+    <div class="platrow"><span><b>100</b> levels</span><span><b>34</b> crew</span><span><b>19</b> arcade cabinets</span></div>
+  </div>
+  <div class="crew-line" id="heroCrew"></div>
+  <div class="scrollcue">▼ MEET THE CREW</div>
+</header>
+
+<!-- HOOK -->
+<section class="band" id="hook">
+  <div class="wrap reveal">
+    <div class="eyebrow">// what is this</div>
+    <h2 class="big">A whole town. <span class="grad">One way out.</span></h2>
+    <p class="lead">100 hand-built levels across five neon neighbourhoods. 34 playable misfits, each with their own jelly, special move and story. Eat the right sweets, dodge the narcs, rescue your mates and fight your way out of Bennistorm.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">100</div><div class="l">Levels</div></div>
+      <div class="stat"><div class="n">34</div><div class="l">Playable crew</div></div>
+      <div class="stat"><div class="n">19</div><div class="l">Arcade cabinets</div></div>
+      <div class="stat"><div class="n">8</div><div class="l">Original tracks</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- IN ACTION -->
+<section class="band action" id="action">
+  <div class="wrap reveal">
+    <div class="eyebrow">// see it move</div>
+    <h2 class="big">In <span class="grad">action.</span></h2>
+    <p class="lead">Chibi crew, painterly worlds, jelly bounce. Here's the vibe — and a screen-grab away from a social clip.</p>
+    <div class="screen" id="screen">
+      <div class="abg" style="background-image:url('assets/worlds/strip.jpg')"></div>
+      <div class="vig"></div>
+      <div class="hud">WAYNO &nbsp; <span class="score">SCORE 0</span></div>
+      <div class="runner"><img class="body" src="assets/crew/wayno.png" alt=""/></div>
+      <div class="tag">▶ live web preview · new art</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORLDS -->
+<section id="worlds"></section>
+
+<!-- SQUAD -->
+<section class="band squad" id="squad">
+  <div class="wrap reveal">
+    <div class="eyebrow">// the crew</div>
+    <h2 class="big">Which one are <span class="grad">you?</span></h2>
+    <p class="lead">Thirty-four misfits, every one with a special and a flaw. Hover them — they wibble. Find the one that's you.</p>
+    <div class="sgrid" id="squadGrid"></div>
+  </div>
+</section>
+
+<!-- VILLAINS -->
+<section class="band villains" id="villains">
+  <div class="vbg"></div>
+  <div class="wrap reveal">
+    <div class="eyebrow">// the other side</div>
+    <h2 class="big">Meet <span style="color:#ff5a5a">The Man.</span></h2>
+    <p class="lead">Bennistorm has a boss — and a whole firm to keep you in it.</p>
+    <div class="boss">
+      <img src="assets/villains/benni.png" alt="Benni Storm"/>
+      <div class="bi">
+        <div class="bt">★ THE BIG BAD</div>
+        <div class="bn">BENNI STORM</div>
+        <div class="bd">The Man himself. He runs Bennistorm and he does not let people leave. Beat him at the top of the Penthouse — or the night never ends.</div>
+      </div>
+    </div>
+    <div class="vgrid" id="vilGrid"></div>
+  </div>
+</section>
+
+<!-- MODES -->
+<section class="band modes" id="modes">
+  <div class="wrap reveal">
+    <div class="eyebrow">// how to play</div>
+    <h2 class="big">More than one <span class="grad">night out.</span></h2>
+    <p class="lead">The 100-level story is just the start — new ways to play are dropping.</p>
+    <div class="mgrid" id="modeGrid"></div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="band story" id="story">
+  <div class="wrap reveal">
+    <div class="eyebrow">// episode one</div>
+    <h2 class="big">Escape from <span class="grad">Bennistorm</span></h2>
+    <p class="lead">It was meant to be one big night out. It turned into the longest night of their lives.</p>
+    <div class="chapters" id="chapters"></div>
+  </div>
+</section>
+
+<!-- STORY CLIPS -->
+<section class="band" id="clips">
+  <div class="wrap reveal">
+    <div class="eyebrow">// watch the story</div>
+    <h2 class="big">The <span class="grad">cutscenes.</span></h2>
+    <p class="lead">Story beats straight from the game. The opening three are yours to watch — the rest, you'll have to escape Bennistorm to see.</p>
+    <div class="clipgrid" id="clipGrid"></div>
+  </div>
+</section>
+
+<!-- WHO IS DENNY? / SOUNDBOARD -->
+<section class="band denny" id="denny">
+  <div class="wrap reveal">
+    <div class="eyebrow" style="color:var(--cyan)">// the soundboard</div>
+    <h2 class="big">Who is <span class="grad">Denny?</span></h2>
+    <p class="lead" style="margin:0 auto">Tap the Inner Six. Crack the sound and the doors swing open — play the first 10 levels of Bennistorm, right here, as Matty.</p>
+    <div class="six" id="sixGrid"></div>
+    <div class="hint">▲ tap any of the Inner Six to play the demo</div>
+  </div>
+</section>
+
+<!-- SOUNDTRACK -->
+<section class="band ost" id="ost">
+  <div class="wrap reveal">
+    <div class="eyebrow">// soundtrack</div>
+    <h2 class="big">An original <span class="grad">spy-jazz</span> score.</h2>
+    <p class="lead">Eight original tracks of surf-rock and spy-jazz, written for the heist. Made to be stuck in your head.</p>
+    <div class="tracks" id="tracks"></div>
+  </div>
+</section>
+
+<!-- BIG ASK -->
+<section class="band ask">
+  <div class="wrap reveal">
+    <div class="eyebrow" style="display:block;text-align:center">// be there when the doors open</div>
+    <h2>Don't get caught<br/><span class="grad">on the outside.</span></h2>
+    <p class="lead" style="margin:10px auto 0">Wishlist now, and be first through when Bennistorm opens.</p>
+    <div class="form"><input type="email" placeholder="your@email.com"/><button class="btn btn-pink">JOIN THE LIST</button></div>
+    <div class="cta-row" style="justify-content:center"><button class="btn btn-candy">★ WISHLIST ON STEAM</button><button class="btn btn-neon">Pre-register on Play</button></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div class="brand"><img src="assets/logo.png" style="width:30px;height:30px;border-radius:8px"/> WIBBLES &amp; WOBBLES</div>
+    <div class="badges"><span>STEAM</span><span>GOOGLE PLAY</span><span>APP STORE</span></div>
+    <div class="credit">© 2026 WJC · Wayne J C Gaming · A Wayne Conyers &amp; Sid Vane production</div>
+  </div>
+</footer>
+
+<!-- CHARACTER MODAL -->
+<div class="modal" id="charModal">
+  <div class="mcard">
+    <button class="x" id="charClose">✕</button>
+    <div class="ph"><img id="mImg" src="" alt=""/></div>
+    <div class="nm" id="mName"></div>
+    <div class="sp" id="mSp"></div>
+    <div class="ln" id="mLine"></div>
+  </div>
+</div>
+
+<!-- GAME POPUP (iframes the real game) -->
+<div class="gmodal" id="gmodal">
+  <div class="gmwrap">
+    <div class="gmtitle" id="gmTitle"></div>
+    <button class="gmclose" id="gmClose">✕</button>
+    <iframe id="gmFrame" src="" title="Wibbles and Wobbles" allow="autoplay; fullscreen"></iframe>
+  </div>
+</div>
+
+<script>
+  // hero crew lineup
+  const heroes=['matty','wayno','thekempster','missym','billy','denny'];
+  document.getElementById('heroCrew').innerHTML=heroes.map(h=>`<img src="assets/crew/${h}.png" alt=""/>`).join('');
+
+  // worlds
+  const worlds=[
+    {k:'warmup',n:'THE WARM-UP',lv:'LEVELS 1–20',d:'A sun-soaked seafront where the night kicks off — colourful bars, palm trees, the first neon flickering on.',pal:['#34d8de','#ffd24a','#ff8a5c'],chibi:'matty'},
+    {k:'strip',n:'THE STRIP',lv:'LEVELS 21–40',d:'The neon party strip after dark — blazing signs, lasers and string-lights, a buzzing magenta night. Peak night.',pal:['#ff4fa3','#34d8de','#a24fc0'],chibi:'missym'},
+    {k:'afters',n:'THE AFTERS',lv:'LEVELS 41–60',d:'Deep into the early hours — grimy backstreets, broken neon, smoky purple fog and a faint sliver of dawn.',pal:['#a24fc0','#5ec8ff','#ff4fa3'],chibi:'chuggers'},
+    {k:'oldtown',n:'OLD TOWN',lv:'LEVELS 61–80',d:'A whitewashed town climbing a steep hillside — lantern-lit cobbles, a little harbour below, cool dawn breaking.',pal:['#5ec8ff','#ffd24a','#a24fc0'],chibi:'thekempster'},
+    {k:'penthouse',n:'THE PENTHOUSE',lv:'LEVELS 81–100',d:"Benni Storm's turf — the final climb. A storm-lit neon spire and the last doors between you and the way out.",pal:['#a24fc0','#34d8de','#ff4fa3'],chibi:'wayno'},
+  ];
+  document.getElementById('worlds').innerHTML=worlds.map(w=>`
+    <div class="world">
+      <div class="wbg" style="background-image:url('assets/worlds/${w.k}.jpg')"></div>
+      <div class="scrim"></div>
+      <img class="chibi" src="assets/crew/${w.chibi}.png" alt=""/>
+      <div class="winner">
+        <div class="lvl">${w.lv}</div>
+        <h3>${w.n}</h3>
+        <p>${w.d}</p>
+        <div class="pal">${w.pal.map(c=>`<i style="background:${c};color:${c}"></i>`).join('')}</div>
+      </div>
+    </div>`).join('');
+
+  // squad grid
+  const crew=[
+    {id:'matty',nm:'MATTY',sp:'THE HECTIC',ln:'All gas, no brakes — clears the screen in a blur of red.'},
+    {id:'wayno',nm:'WAYNO',sp:'THE SCATTER',ln:'Throws the lot at once. Chaos — but the good kind.'},
+    {id:'denny',nm:'DENNY',sp:'THE BRIEF',ln:'Hidden platforms light up and points double. The man with the plan.'},
+    {id:'richyb',nm:'RICHY B',sp:'THE STRETCH',ln:'Reaches what no one else can. Smarter, older, sharper.'},
+    {id:'gracie',nm:'GRACIE',sp:'THE SAVAGE',ln:'No mercy, no notes. Just damage.'},
+    {id:'thekempster',nm:'THE KEMPSTER',sp:'THE ORGANISER',ln:'Freezes every narc on screen — then loses 20 minutes to his phone.'},
+    {id:'billy',nm:'BILLY BANANA',sp:'BIG SCORE',ln:'Banana suit on, points through the roof.'},
+    {id:'parker',nm:'PARKER',sp:'SIXTH SENSE',ln:'Sees trouble before it happens. Usually.'},
+    {id:'flash',nm:'FLASH',sp:'LIGHTNING RUN',ln:'Gone before you finish the sentence.'},
+    {id:'johnnyb',nm:'JOHNNY B',sp:'THE BEST MAN',ln:'Holds it together when it all falls apart.'},
+    {id:'elliejelly',nm:'ELLIE JELLY',sp:'CHATTERBOX',ln:'Talks the enemy into a standstill.'},
+    {id:'missym',nm:'MISSY M',sp:'STARFALL',ln:'Calls the stars down on anyone in the way.'},
+    {id:'dannybee',nm:'DANNY BEE',sp:'THE MACHINE',ln:"Doesn't stop. Doesn't tire. Doesn't care."},
+    {id:'marshy',nm:'MARSHY',sp:'PERIMETER CHECK',ln:'Always knows where the exits are.'},
+    {id:'nickswell',nm:'NICKS WELL',sp:'HOLE IN ONE',ln:'One swing, one wipeout. Legend of the green.'},
+    {id:'roberto',nm:'ROBERTO BEERIO',sp:'SLAM DUNK',ln:'Comes down like a ton of bricks. Net included.'},
+    {id:'bride',nm:'THE BRIDE',sp:'WEDDING WALTZ',ln:'Spins through trouble in a dress that means business.'},
+    {id:'randall',nm:'RANDALL',sp:'THE SPIN',ln:"Round and round till everyone's dizzy but him."},
+    {id:'shakey',nm:'SHAKEY',sp:'EARTHQUAKE',ln:'Stamps once. The whole street feels it.'},
+    {id:'greyham',nm:'GREYHAM',sp:'PIZZA POWER',ln:'Fuelled by slices, powered by spite.'},
+    {id:'lordrelff',nm:'LORD RELFF',sp:'RELFF RAPID',ln:'Fast hands, faster mouth.'},
+    {id:'rusty',nm:'RUSTY',sp:'LIFE & SOUL',ln:"The reason it's a stag at all. Get him home."},
+    {id:'alf',nm:'ALF',sp:'FAST TALKER',ln:'Out-argues the bouncers, every single time.'},
+    {id:'chuggers',nm:'CHUGGERS',sp:'THE BOUNCE',ln:'Down it, bounce back, do it again.'},
+    {id:'luckeyballs',nm:'LUCKEYBALLS',sp:'THE BALLS',ln:'Rolls the dice on everything. Usually wins.'},
+    {id:'granny',nm:'GRANNY',sp:'GRAN KNOWS BEST',ln:'Earn every achievement and she comes out of retirement. Pure love, pure chaos.'},
+    {id:'nicci',nm:'NICCI THE CHEEKS',sp:'WHISKY WINGS',ln:"Two shots and she's airborne."},
+    {id:'cabbie',nm:'THE CABBIE',sp:'CALL A CAB',ln:'Always knows a shortcut. Never the meter.'},
+  ];
+  document.getElementById('squadGrid').innerHTML=crew.map((c,i)=>`<div class="sc" data-i="${i}"><img src="assets/crew/${c.id}.png" loading="lazy" alt="${c.nm}"/><div class="nm">${c.nm}</div><div class="tap">▶ TAP</div></div>`).join('');
+  // character modal
+  const modal=document.getElementById('charModal');
+  function openChar(c,vil){document.getElementById('mImg').src='assets/'+(vil?'villains':'crew')+'/'+c.id+'.png';document.getElementById('mName').textContent=c.nm;document.getElementById('mSp').textContent='★ '+c.sp;document.getElementById('mLine').textContent=c.ln;document.querySelector('.mcard').classList.toggle('vil',!!vil);modal.classList.add('open');}
+  document.getElementById('squadGrid').addEventListener('click',e=>{const card=e.target.closest('.sc');if(card)openChar(crew[+card.dataset.i]);});
+  // villains (the firm)
+  const villains=[
+    {id:'sally',nm:'SAUCY SALLY',sp:'THE HOSTESS',ln:'Queen of the cabaret. Dazzles you blind, then drops you cold.'},
+    {id:'kebabaruss',nm:'KEBABARUSS',sp:'THE GRILL MAN',ln:'King of the late-night grill. Greasy, relentless, everywhere at 3am.'},
+    {id:'steward',nm:'THE STEWARD',sp:'THE FRONT LINE',ln:"Matchday steward who never clocked off. Slow, solid, immovable — and your name's not on the list."},
+    {id:'righthand',nm:'THE RIGHT HAND',sp:"BENNI'S No.2",ln:"Does the jobs Benni won't dirty his gloves with."},
+    {id:'magpie',nm:'THE MAGPIE',sp:'THE THIEF',ln:'Nicks anything shiny — including your power-ups.'},
+  ];
+  document.getElementById('vilGrid').innerHTML=villains.map((v,i)=>`<div class="vc" data-i="${i}"><img src="assets/villains/${v.id}.png" loading="lazy" alt="${v.nm}"/><div class="nm">${v.nm}</div><div class="rl">${v.sp}</div></div>`).join('');
+  document.getElementById('vilGrid').addEventListener('click',e=>{const c=e.target.closest('.vc');if(c)openChar(villains[+c.dataset.i],true);});
+  function closeChar(){modal.classList.remove('open');}
+  document.getElementById('charClose').addEventListener('click',closeChar);
+  modal.addEventListener('click',e=>{if(e.target===modal)closeChar();});
+  addEventListener('keydown',e=>{if(e.key==='Escape')closeChar();});
+
+  // story chapters
+  const chs=[
+    ['01','THE STAG',"It was meant to be one big night out — Rusty's stag. What could possibly go wrong?"],
+    ['02','THE TOWN',"Welcome to Bennistorm: the town that doesn't let people leave. The doors lock. The clock starts."],
+    ['03','THE CREW',"Your mates are scattered across five neighbourhoods. Find them, free them, fight back."],
+    ['04','THE MAN',"Benni Storm runs this town — and he is NOT letting the stag make it home."],
+    ['05','ESCAPE',"Beat the clock. Get to the wedding. Saturday is saved… if you can trust everyone you've freed."],
+  ];
+  document.getElementById('chapters').innerHTML=chs.map(([no,h,p])=>`<div class="ch"><div class="no">${no}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
+
+  // tracks
+  const tr=['Main Theme','The Strip','Last Orders','The Chase','Cabaret','Penthouse Dawn','Curtain Call','Sounds Like?'];
+  document.getElementById('tracks').innerHTML=tr.map(t=>`<span class="trk">♪ ${t}</span>`).join('');
+
+  // modes
+  const modes=[
+    ['🌃','STORY','live','100 levels, five worlds, one way out. Escape Bennistorm and get the stag home.'],
+    ['👥','CO-OP','live','Two players, one mission — get the stag home together. Twice the chaos.'],
+    ['🎟️','THE ARCADE','live','19 mini-cabinets hiding inside the game — a whole arcade-within-an-arcade.'],
+    ['🌊','HORDE','soon','Endless waves on one screen. How long can you last before the town swallows you?'],
+    ['🌀','CHAOS','soon','Every rule bent at once — power-ups, perks and madness stacked sky-high.'],
+    ['🕵️','WHO IS DENNY?','soon','A bonus mode hidden in plain sight. Crack the code, change the game.'],
+  ];
+  document.getElementById('modeGrid').innerHTML=modes.map(([ic,h,st,p])=>`<div class="mode"><span class="pill ${st}">${st==='live'?'PLAYABLE':'COMING'}</span><div class="ic">${ic}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
+
+  // IN ACTION — drifting tokens + score tick
+  (function(){const scr=document.getElementById('screen');if(!scr)return;const toks=['🍒','🍰','⭐','🍌','💎','❤️'];
+    for(let i=0;i<6;i++){const e=document.createElement('div');e.className='token';e.textContent=toks[i%toks.length];e.style.left=(12+i*14)+'%';e.style.top=(18+(i%3)*20)+'%';e.style.animationDelay=(i*0.45)+'s';scr.appendChild(e);}
+    let s=0;const sc=scr.querySelector('.score');setInterval(()=>{s+=Math.floor(Math.random()*40+10);if(sc)sc.textContent='SCORE '+s.toLocaleString();},700);
+  })();
+
+  // ── STORY CLIPS + SOUNDBOARD → popup the real game ──
+  const GAME_URL='http://localhost:5180/embed.html'; // DEV. At deploy → the game's hosted URL.
+  const clips=[
+    {id:'intro',t:'THE STAG DO',s:'Episode One · the opening',thumb:'warmup'},
+    {id:'vig10',t:"DENNY'S LOCKUP",s:'Level 10 · a dodgy kebab shop',thumb:'afters'},
+    {id:'vig20',t:"RICHYB'S LOCKUP",s:'Level 20 · a hen-do party bus',thumb:'strip'},
+  ];
+  const locked=[['LEVEL 30','Karaoke bar'],['LEVEL 40','All-day pub'],['LEVEL 50','Tapas place'],['LEVEL 60','Silent disco'],['LEVEL 70','Conga line'],['LEVEL 80','Security hut'],['LEVEL 90','The penthouse'],['THE BOSSES','5 rescues']];
+  document.getElementById('clipGrid').innerHTML =
+    clips.map(c=>`<div class="clip" data-clip="${c.id}"><div class="thumb" style="background-image:url('assets/worlds/${c.thumb}.jpg')"></div><div class="scrim2"></div><div class="pl">▶</div><div class="ci"><div class="t">${c.t}</div><div class="s">${c.s}</div></div></div>`).join('')
+    + locked.map(([lv,d])=>`<div class="clip locked" data-demo="1"><div class="lk"><div style="font-size:22px">🔒</div><div class="pg">▶ PLAY THE GAME</div><div class="lvl">${lv} · ${d}</div></div></div>`).join('');
+  const six=[['johnnyb','JOHNNY B'],['thekempster','THE KEMPSTER'],['marshy','MARSHY'],['shakey','SHAKEY'],['flash','FLASH'],['chuggers','CHUGGERS']];
+  document.getElementById('sixGrid').innerHTML=six.map(([id,n])=>`<div class="sixb" data-demo="1"><img src="assets/crew/${id}.png" alt="${n}"/><div class="n">${n}</div></div>`).join('');
+  const gm=document.getElementById('gmodal'),gmF=document.getElementById('gmFrame'),gmT=document.getElementById('gmTitle');
+  function openGame(src,title){gmF.src=src;gmT.textContent=title;gm.classList.add('open');}
+  function closeGame(){gm.classList.remove('open');gmF.src='';}
+  document.getElementById('gmClose').addEventListener('click',closeGame);
+  gm.addEventListener('click',e=>{if(e.target===gm)closeGame();});
+  addEventListener('keydown',e=>{if(e.key==='Escape')closeGame();});
+  document.getElementById('clipGrid').addEventListener('click',e=>{const c=e.target.closest('.clip');if(!c)return;
+    if(c.dataset.clip)openGame(GAME_URL+'?clip='+c.dataset.clip,(c.querySelector('.t')||{}).textContent||'CLIP');
+    else openGame(GAME_URL+'?demo=1','▶ PLAYABLE DEMO · LEVELS 1–10');});
+  document.getElementById('sixGrid').addEventListener('click',()=>openGame(GAME_URL+'?demo=1','▶ DEMO · LEVELS 1–10 · MATTY'));
+
+  // scroll reveal
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // light parallax on hero crew
+  addEventListener('mousemove',e=>{const x=(e.clientX/innerWidth-.5),y=(e.clientY/innerHeight-.5);
+    const hb=document.querySelector('.hero-bg'); if(hb)hb.style.transform=`scale(1.08) translate(${x*-18}px,${y*-12}px)`;});
+</script>
+</body>
+</html>
