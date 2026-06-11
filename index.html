@@ -238,6 +238,14 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 .gmodal.open{display:flex}
 .gmwrap{position:relative;width:min(440px,96vw);height:min(86vh,840px);border-radius:18px;overflow:hidden;box-shadow:0 0 0 2px rgba(52,216,222,.45),0 30px 80px rgba(0,0,0,.7);background:#05030c}
 .gmwrap iframe{width:100%;height:100%;border:0;display:block}
+/* "playable soon" panel (shown until the game is hosted) */
+.gmsoon{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:26px;background:radial-gradient(circle at 50% 28%,#1c1033,#05030c)}
+.gmsoon.show{display:flex}
+.gmsoonInner{max-width:340px}
+.gmsoonBadge{width:66px;height:66px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#05030c;background:linear-gradient(180deg,#9bfcff,#15c6e6);box-shadow:0 0 24px rgba(52,216,222,.6)}
+.gmsoon h3{font-family:'Lilita One',sans-serif;font-size:27px;letter-spacing:1px;margin:0 0 12px;color:#ffd64a}
+.gmsoon p{color:#cdbfe6;font-size:14px;line-height:1.55;margin:0 0 20px}
+.gmsoonBack{font-family:'Lilita One',sans-serif;letter-spacing:.5px;padding:11px 24px;border-radius:999px;border:0;cursor:pointer;color:#05030c;background:linear-gradient(180deg,#ffe27a,#ffb23e);box-shadow:0 6px 18px rgba(255,178,62,.4)}
 .gmclose{position:absolute;top:0;right:0;z-index:2;background:rgba(255,46,147,.96);color:#fff;border:none;font-family:'Bungee';font-size:13px;padding:8px 13px;border-radius:0 0 0 12px;cursor:pointer}
 .gmtitle{position:absolute;top:0;left:0;z-index:2;background:rgba(10,6,18,.72);color:var(--cyan);font-family:'JetBrains Mono';font-size:10px;padding:7px 12px;border-radius:0 0 12px 0}
 /* MOBILE polish */
@@ -455,6 +463,14 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
     <div class="gmtitle" id="gmTitle"></div>
     <button class="gmclose" id="gmClose">✕</button>
     <iframe id="gmFrame" src="" title="Wibbles and Wobbles" allow="autoplay; fullscreen"></iframe>
+    <div class="gmsoon" id="gmSoon">
+      <div class="gmsoonInner">
+        <div class="gmsoonBadge">▶</div>
+        <h3>PLAYABLE SOON</h3>
+        <p>The clips, soundboard and 10-level demo all unlock with the game. Wishlist now and you'll be first through the door when Bennistorm opens.</p>
+        <button class="gmsoonBack" id="gmSoonBack">★ Back to the site</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -579,10 +595,19 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
     + locked.map(([lv,d])=>`<div class="clip locked" data-demo="1"><div class="lk"><div style="font-size:22px">🔒</div><div class="pg">▶ PLAY THE GAME</div><div class="lvl">${lv} · ${d}</div></div></div>`).join('');
   const six=[['johnnyb','JOHNNY B'],['thekempster','THE KEMPSTER'],['marshy','MARSHY'],['shakey','SHAKEY'],['flash','FLASH'],['chuggers','CHUGGERS']];
   document.getElementById('sixGrid').innerHTML=six.map(([id,n])=>`<div class="sixb" data-demo="1"><img src="assets/crew/${id}.png" alt="${n}"/><div class="n">${n}</div></div>`).join('');
-  const gm=document.getElementById('gmodal'),gmF=document.getElementById('gmFrame'),gmT=document.getElementById('gmTitle');
-  function openGame(src,title){gmF.src=src;gmT.textContent=title;gm.classList.add('open');}
+  const gm=document.getElementById('gmodal'),gmF=document.getElementById('gmFrame'),gmT=document.getElementById('gmTitle'),gmSoon=document.getElementById('gmSoon');
+  // Game lives at GAME_URL. Until it's hosted (still localhost) show the "playable soon" panel
+  // instead of a broken frame. Flips to the real game automatically once GAME_URL is a hosted URL.
+  const GAME_LIVE=!/localhost|127\.0\.0\.1/.test(GAME_URL);
+  function openGame(src,title){
+    gmT.textContent=title;
+    if(GAME_LIVE){gmSoon.classList.remove('show');gmF.style.display='block';gmF.src=src;}
+    else{gmF.src='';gmF.style.display='none';gmSoon.classList.add('show');}
+    gm.classList.add('open');
+  }
   function closeGame(){gm.classList.remove('open');gmF.src='';}
   document.getElementById('gmClose').addEventListener('click',closeGame);
+  document.getElementById('gmSoonBack').addEventListener('click',closeGame);
   gm.addEventListener('click',e=>{if(e.target===gm)closeGame();});
   addEventListener('keydown',e=>{if(e.key==='Escape')closeGame();});
   document.getElementById('clipGrid').addEventListener('click',e=>{const c=e.target.closest('.clip');if(!c)return;
