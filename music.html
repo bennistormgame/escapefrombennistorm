@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Bennistorm Soundtrack — Wibbles &amp; Wobbles</title>
+<meta name="description" content="Two original albums from Wibbles &amp; Wobbles — synth-arcade character songs and a spy-jazz score by DJ Wayne J C. Play the previews."/>
+<link rel="icon" type="image/png" href="assets/logo.png"/>
+<link rel="apple-touch-icon" href="assets/logo.png"/>
+<meta name="theme-color" content="#0a0612"/>
+<link rel="canonical" href="https://wibbleswobbles.com/music.html"/>
+<meta property="og:type" content="music.playlist"/>
+<meta property="og:site_name" content="Wibbles and Wobbles"/>
+<meta property="og:url" content="https://wibbleswobbles.com/music.html"/>
+<meta property="og:title" content="The Bennistorm Soundtrack — two original albums"/>
+<meta property="og:description" content="Synth-arcade character songs + a spy-jazz score. Play the previews."/>
+<meta property="og:image" content="https://wibbleswobbles.com/assets/og.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://wibbleswobbles.com/assets/og.jpg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@700&family=Lilita+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0612;--bg2:#130b22;--panel:#160d28;--panel2:#1e1236;--magenta:#ff4fa3;--cyan:#34d8de;--purple:#a24fc0;--gold:#ffd24a;--ink:#f6eefc;--mut:#b9a6d6;}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Fredoka',system-ui,sans-serif;overflow-x:clip;padding-bottom:96px}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 26px}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}html{scroll-behavior:auto}}
+a:focus-visible,button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.eyebrow{font-family:'JetBrains Mono';letter-spacing:4px;font-size:12px;text-transform:uppercase;color:var(--cyan)}
+.grad{background:linear-gradient(90deg,var(--magenta),var(--purple),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:12px 26px;background:rgba(10,6,18,.72);backdrop-filter:blur(12px);border-bottom:1px solid rgba(162,79,192,.25)}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Bungee';font-size:14px;color:var(--ink)}
+.brand img{width:34px;height:34px;border-radius:9px}
+.tm{font-size:.55em;vertical-align:super;opacity:.8}
+.btn{font-family:'Bungee';font-size:13px;border:none;cursor:pointer;border-radius:12px;padding:12px 20px;display:inline-flex;gap:8px;color:#3a1d00;background:linear-gradient(180deg,#ffd874,#ff9e1f);box-shadow:0 6px 0 #b96d00,0 12px 22px rgba(255,158,31,.4);transition:transform .15s}
+.btn:hover{transform:translateY(-3px) scale(1.03)}
+header.mhead{padding:120px 0 16px}
+header.mhead h1{font-family:'Bungee';font-size:clamp(28px,5vw,48px);margin:10px 0 6px}
+header.mhead p{color:var(--mut);font-size:16px;max-width:640px;line-height:1.5}
+.prevnote{margin:16px 0 6px;display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono';font-size:12px;color:var(--gold);background:rgba(255,210,74,.08);border:1px solid rgba(255,210,74,.3);border-radius:999px;padding:9px 16px}
+/* shelf */
+.shelf{display:flex;gap:22px;flex-wrap:wrap;padding:26px 0}
+.albCard{width:240px;background:var(--panel);border-radius:16px;padding:16px;cursor:pointer;transition:transform .15s,background .15s;border:1px solid rgba(162,79,192,.3)}
+.albCard:hover{transform:translateY(-5px);background:var(--panel2)}
+.albCard img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+.albCard .t{font-family:'Bungee';font-size:14px;margin-top:12px;line-height:1.3}
+.albCard .s{font-size:12px;color:var(--mut);margin-top:5px;font-family:'JetBrains Mono'}
+/* album view */
+.albumView{display:none;padding:18px 0}
+.albumView.show{display:block}
+.hero{display:flex;gap:28px;align-items:flex-end;flex-wrap:wrap;margin-bottom:20px}
+.hero img{width:220px;aspect-ratio:1;object-fit:cover;border-radius:12px;box-shadow:0 16px 50px rgba(0,0,0,.65)}
+.hero .kind{font-family:'JetBrains Mono';font-size:11px;letter-spacing:3px;color:var(--mut)}
+.hero h2{font-family:'Bungee';font-size:clamp(26px,4vw,40px);line-height:1.05;margin:8px 0}
+.hero .meta{font-size:13px;color:var(--mut);font-family:'JetBrains Mono'}
+.hero .meta b{color:var(--ink)}
+.playAll{margin-top:16px}
+.back{background:none;border:none;color:var(--mut);font-family:'JetBrains Mono';font-size:12px;letter-spacing:1px;cursor:pointer;padding:8px 0;margin-bottom:6px}
+.back:hover{color:var(--cyan)}
+.tracks{list-style:none;border-top:1px solid rgba(162,79,192,.18)}
+.row{display:grid;grid-template-columns:30px 46px 1fr auto;align-items:center;gap:14px;padding:9px 10px;border-bottom:1px solid rgba(162,79,192,.1);cursor:pointer;border-radius:8px;transition:background .12s}
+.row:hover{background:rgba(52,216,222,.06)}
+.row.playing{background:rgba(255,210,74,.1)}
+.row.playing .ti,.row.playing .no{color:var(--gold)}
+.row .no{color:var(--mut);font-family:'JetBrains Mono';font-size:13px;text-align:center}
+.row img{width:46px;height:46px;border-radius:6px;object-fit:cover;display:block}
+.row .ti{font-weight:600;font-size:15px}
+.row .dur{color:var(--mut);font-family:'JetBrains Mono';font-size:12px;text-align:right}
+/* now playing bar */
+.nowbar{position:fixed;left:0;right:0;bottom:0;z-index:80;background:rgba(16,10,28,.96);backdrop-filter:blur(12px);border-top:1px solid rgba(162,79,192,.35);display:none;align-items:center;gap:14px;padding:10px 22px}
+.nowbar.show{display:flex}
+.nowbar img{width:48px;height:48px;border-radius:6px;object-fit:cover}
+.nowbar .nt{font-weight:700;font-size:14px}
+.nowbar .na{font-size:11px;color:var(--mut);font-family:'JetBrains Mono'}
+.nbprog{flex:1;max-width:440px;margin:0 8px;height:5px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;cursor:pointer}
+.nbprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--magenta))}
+.pbtn{margin-left:auto;background:linear-gradient(180deg,#ffd874,#ff9e1f);border:none;color:#1a1206;width:46px;height:46px;border-radius:50%;font-size:17px;cursor:pointer;font-weight:900;flex-shrink:0;box-shadow:0 4px 14px rgba(255,158,31,.4)}
+.nbtag{font-family:'JetBrains Mono';font-size:9px;letter-spacing:1px;color:#1a1206;background:var(--gold);padding:2px 7px;border-radius:999px;flex-shrink:0}
+footer{border-top:1px solid rgba(162,79,192,.25);padding:38px 0;color:var(--mut);font-size:13px;margin-top:30px}
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.credit{font-family:'JetBrains Mono';font-size:11px;color:#7d6aa0}
+@media(max-width:560px){.nowbar .nbprog{display:none}.hero img{width:160px}.nbtag{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></a>
+  <a class="btn" href="index.html#join">★ WISHLIST</a>
+</nav>
+
+<header class="mhead">
+  <div class="wrap">
+    <div class="eyebrow">// the soundtrack</div>
+    <h1>The Bennistorm <span class="grad">Soundtrack.</span></h1>
+    <p>Two original albums by <b>DJ Wayne J C</b> — synth-arcade character songs and a spy-jazz score, written for the heist. Tap any track to play.</p>
+    <div class="prevnote">🎧 30-second previews · full albums drop on Spotify &amp; Apple Music at launch</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="shelf" id="shelf"></div>
+
+  <div class="albumView" id="albumView">
+    <button class="back" id="backBtn">← ALL ALBUMS</button>
+    <div class="hero">
+      <img id="avCover" src="" alt=""/>
+      <div>
+        <div class="kind">ALBUM · DJ WAYNE J C · 2026</div>
+        <h2 id="avTitle"></h2>
+        <div class="meta" id="avMeta"></div>
+        <button class="btn playAll" id="playAll">▶ PLAY</button>
+      </div>
+    </div>
+    <ul class="tracks" id="trackList"></ul>
+  </div>
+</div>
+
+<div class="nowbar" id="nowbar">
+  <img id="nbArt" src="" alt=""/>
+  <div><div class="nt" id="nbT"></div><div class="na" id="nbA"></div></div>
+  <span class="nbtag">PREVIEW</span>
+  <div class="nbprog" id="nbProg"><i id="nbBar"></i></div>
+  <button class="pbtn" id="nbBtn">⏸</button>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="index.html"><img src="assets/logo.png" style="width:30px;height:30px;border-radius:8px"/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></a>
+    <div class="credit">© 2026 WJC · Wayne J C Gaming · Music by DJ Wayne J C</div>
+  </div>
+</footer>
+
+<script>
+const ART='assets/music/art/', AUD='assets/music/';
+const ALBUMS=[
+ {id:'retro',title:'Retro Sounds of Bennistorm',sub:'Synth-Arcade · The Character Songs',cover:'album-retro.jpg',
+  tracks:[
+   ['Benni Stormy Nights','retro/benni-stormy-nights.mp3','1:42','benni-stormy-nights'],
+   ['Matty Tat Tat','retro/matty-tat-tat.mp3','2:40','matty-tat-tat'],
+   ['Wayno No No','retro/wayno-no-no.mp3','2:29','wayno-no-no'],
+   ["Ellie's Jellies",'retro/ellies-jellies.mp3','3:09','ellies-jellies'],
+   ['Gracie Goes to Win','retro/gracie-goes-to-win.mp3','3:13','gracie-goes-to-win'],
+   ['Chug with Chuggers','retro/chug-with-chuggers.mp3','3:21','chug-with-chuggers'],
+   ["'Alf a Good Mind",'retro/alf-a-good-mind.mp3','2:24','alf-a-good-mind'],
+   ["Kempster's Lanyard",'retro/kempsters-lanyard.mp3','2:34','kempsters-lanyard'],
+   ['Missing Missy M','retro/missing-missy-m.mp3','2:27','missing-missy-m'],
+   ["Parker's Park Run",'retro/parkers-park-run.mp3','2:41','parkers-park-run'],
+   ['Greyham and Eggs','retro/greyham-and-eggs.mp3','2:49','greyham-and-eggs'],
+   ['Denny Goes for Broke','retro/denny-goes-for-broke.mp3','2:58','denny-goes-for-broke'],
+   ['Benni Raves Again','retro/benni-raves-again.mp3','3:19','benni-raves-again'],
+   ['Sally Takes You Back','retro/sally-takes-you-back.mp3','2:45','sally-takes-you-back'],
+   ['One for the Road, Benni','retro/one-for-the-road-benni.mp3','3:13','one-for-the-road-benni']]},
+ {id:'summer',title:'Summer Days and Bennistorm Nights',sub:'Spy-Jazz · The Original Score',cover:'album-summer.jpg',
+  tracks:[
+   ["Marshy's Midnight Perimeter Check",'summer/marshys-midnight-perimeter-check.mp3','3:19','marshys-midnight-perimeter-check'],
+   ["Risstee's Happy Heist",'summer/risstees-happy-heist.mp3','3:37','risstees-happy-heist'],
+   ["Billy's Deadline Chase",'summer/billys-deadline-chase.mp3','2:57','billys-deadline-chase'],
+   ['The Escape of Mr Branks','summer/the-escape-of-mr-branks.mp3','3:03','the-escape-of-mr-branks'],
+   ['Randall Stays on the Dancefloor','summer/randall-stays-on-the-dancefloor.mp3','2:42','randall-stays-on-the-dancefloor'],
+   ['Shakeys Ring Sting','summer/shakeys-ring-sting.mp3','3:06','shakeys-ring-sting'],
+   ['Take Your Time Tamerier','summer/take-your-time-tamerier.mp3','2:34','take-your-time-tamerier'],
+   ['RichyB Loves a Cup of Tea','summer/richyb-loves-a-cup-of-tea.mp3','2:55','richyb-loves-a-cup-of-tea'],
+   ['The Breezy Bride','summer/the-breezy-bride.mp3','2:47','the-breezy-bride'],
+   ['Light Beams, Love Beams','summer/light-beams-love-beams.mp3','4:05',null],
+   ['Chimmy Churi','summer/chimmy-churi.mp3','2:35',null]]}
+];
+let cur=null, idx=-1;
+const audio=new Audio();
+const $=id=>document.getElementById(id);
+function artOf(a,t){return t[3]?ART+t[3]+'.jpg':ART+a.cover;}
+function albLen(a){let s=0;a.tracks.forEach(t=>{const p=t[2].split(':');s+=(+p[0])*60+(+p[1]);});return Math.round(s/60)+' min';}
+function renderShelf(){
+  $('shelf').innerHTML=ALBUMS.map((a,i)=>`<div class="albCard" data-i="${i}"><img src="${ART+a.cover}" alt="${a.title}"/><div class="t">${a.title}</div><div class="s">${a.sub} · ${a.tracks.length} songs</div></div>`).join('');
+  $('shelf').querySelectorAll('.albCard').forEach(c=>c.addEventListener('click',()=>openAlbum(+c.dataset.i)));
+}
+function openAlbum(i){
+  cur=ALBUMS[i];
+  $('shelf').style.display='none';
+  $('albumView').classList.add('show');
+  $('avCover').src=ART+cur.cover;
+  $('avTitle').textContent=cur.title;
+  $('avMeta').innerHTML=`<b>${cur.sub}</b> · ${cur.tracks.length} songs · ${albLen(cur)}`;
+  renderRows();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderRows(){
+  $('trackList').innerHTML=cur.tracks.map((t,i)=>`<li class="row${i===idx?' playing':''}" data-i="${i}"><span class="no">${i===idx?'▶':(i+1)}</span><img src="${artOf(cur,t)}" alt=""/><span class="ti">${t[0]}</span><span class="dur">${t[2]}</span></li>`).join('');
+  $('trackList').querySelectorAll('.row').forEach(r=>r.addEventListener('click',()=>playIdx(+r.dataset.i)));
+}
+function playIdx(i){
+  idx=i; const t=cur.tracks[i];
+  audio.src=AUD+t[1]; audio.play().catch(()=>{});
+  $('nowbar').classList.add('show');
+  $('nbArt').src=artOf(cur,t);
+  $('nbT').textContent=t[0];
+  $('nbA').textContent='DJ Wayne J C — '+cur.title;
+  $('nbBtn').textContent='⏸';
+  renderRows();
+}
+function togglePlay(){ if(audio.paused){audio.play().catch(()=>{});$('nbBtn').textContent='⏸';} else {audio.pause();$('nbBtn').textContent='▶';} }
+audio.addEventListener('ended',()=>{ if(cur&&idx<cur.tracks.length-1)playIdx(idx+1); else $('nbBtn').textContent='▶'; });
+audio.addEventListener('timeupdate',()=>{ if(audio.duration)$('nbBar').style.width=(audio.currentTime/audio.duration*100)+'%'; });
+$('nbBtn').addEventListener('click',togglePlay);
+$('backBtn').addEventListener('click',()=>{$('albumView').classList.remove('show');$('shelf').style.display='flex';});
+$('playAll').addEventListener('click',()=>playIdx(0));
+$('nbProg').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;});
+addEventListener('keydown',e=>{if(e.code==='Space'&&$('nowbar').classList.contains('show')){e.preventDefault();togglePlay();}});
+renderShelf();
+</script>
+</body>
+</html>

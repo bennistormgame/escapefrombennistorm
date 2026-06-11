@@ -460,9 +460,10 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 <section class="band ost" id="ost">
   <div class="wrap reveal">
     <div class="eyebrow">// soundtrack</div>
-    <h2 class="big">An original <span class="grad">spy-jazz</span> score.</h2>
-    <p class="lead">Eight original tracks of surf-rock and spy-jazz, written for the heist. Made to be stuck in your head.</p>
+    <h2 class="big">Two albums. <span class="grad">One heist.</span></h2>
+    <p class="lead">A synth-arcade album of character songs and a spy-jazz original score — 26 tracks by DJ Wayne J C, written for the heist. Made to be stuck in your head.</p>
     <div class="tracks" id="tracks"></div>
+    <a class="btn btn-candy" href="music.html" style="margin-top:28px">▶ OPEN THE JUKEBOX</a>
   </div>
 </section>
 
@@ -481,7 +482,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   <div class="wrap foot">
     <div class="brand"><img src="assets/logo.png" style="width:30px;height:30px;border-radius:8px"/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></div>
     <div class="badges"><span>STEAM</span><span>GOOGLE PLAY</span><span>APP STORE</span></div>
-    <div class="footlinks"><a href="wayno.html">The Maker</a><a href="press.html">Press Kit</a><a href="#join">Wishlist</a></div>
+    <div class="footlinks"><a href="music.html">Soundtrack</a><a href="wayno.html">The Maker</a><a href="press.html">Press Kit</a><a href="#join">Wishlist</a></div>
     <div class="credit">© 2026 WJC · Wayne J C Gaming · A Wayne Conyers &amp; Sid Vane production</div>
   </div>
 </footer>
@@ -602,7 +603,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   document.getElementById('chapters').innerHTML=chs.map(([no,h,p])=>`<div class="ch"><div class="no">${no}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
   // tracks
-  const tr=['Main Theme','The Strip','Last Orders','The Chase','Cabaret','Penthouse Dawn','Curtain Call','Sounds Like?'];
+  const tr=['Benni Stormy Nights','Matty Tat Tat',"Marshy's Midnight Perimeter Check",'Wayno No No',"Risstee's Happy Heist",'Chug with Chuggers','Sally Takes You Back','Chimmy Churi'];
   document.getElementById('tracks').innerHTML=tr.map(t=>`<span class="trk">♪ ${t}</span>`).join('');
 
   // modes

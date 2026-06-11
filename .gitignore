@@ -6,3 +6,5 @@ package-lock.json
 *.log
 .DS_Store
 _ogcard.mjs
+_genmusic.sh
+_summercover.mjs
