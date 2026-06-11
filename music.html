@@ -54,7 +54,11 @@ header.mhead p{color:var(--mut);font-size:16px;max-width:640px;line-height:1.5}
 .albumView{display:none;padding:18px 0}
 .albumView.show{display:block}
 .hero{display:flex;gap:28px;align-items:flex-end;flex-wrap:wrap;margin-bottom:20px}
-.hero img{width:220px;aspect-ratio:1;object-fit:cover;border-radius:12px;box-shadow:0 16px 50px rgba(0,0,0,.65)}
+.heroCover{position:relative;width:220px;height:220px;flex-shrink:0}
+.heroCover img,.heroCover video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px;box-shadow:0 16px 50px rgba(0,0,0,.65)}
+.heroCover video{display:none}
+.heroCover.playing video{display:block}
+.heroCover.playing::after{content:'▶ NOW PLAYING';position:absolute;left:8px;bottom:8px;font-family:'JetBrains Mono';font-size:9px;letter-spacing:1px;color:#fff;background:rgba(10,6,18,.7);padding:3px 8px;border-radius:999px}
 .hero .kind{font-family:'JetBrains Mono';font-size:11px;letter-spacing:3px;color:var(--mut)}
 .hero h2{font-family:'Bungee';font-size:clamp(26px,4vw,40px);line-height:1.05;margin:8px 0}
 .hero .meta{font-size:13px;color:var(--mut);font-family:'JetBrains Mono'}
@@ -84,7 +88,7 @@ header.mhead p{color:var(--mut);font-size:16px;max-width:640px;line-height:1.5}
 footer{border-top:1px solid rgba(162,79,192,.25);padding:38px 0;color:var(--mut);font-size:13px;margin-top:30px}
 .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
 .credit{font-family:'JetBrains Mono';font-size:11px;color:#7d6aa0}
-@media(max-width:560px){.nowbar .nbprog{display:none}.hero img{width:160px}.nbtag{display:none}}
+@media(max-width:560px){.nowbar .nbprog{display:none}.heroCover{width:160px;height:160px}.nbtag{display:none}}
 </style>
 </head>
 <body>
@@ -108,7 +112,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:38px 0;color:var(--mut)
   <div class="albumView" id="albumView">
     <button class="back" id="backBtn">← ALL ALBUMS</button>
     <div class="hero">
-      <img id="avCover" src="" alt=""/>
+      <div class="heroCover" id="heroCover"><img id="avCover" src="" alt=""/><video id="avVid" muted loop playsinline preload="none"></video></div>
       <div>
         <div class="kind">ALBUM · DJ WAYNE J C · 2026</div>
         <h2 id="avTitle"></h2>
@@ -204,6 +208,7 @@ function openAlbum(i){
   $('shelf').style.display='none';
   $('albumView').classList.add('show');
   $('avCover').src=ART+cur.cover;
+  $('heroCover').classList.remove('playing');
   $('avTitle').textContent=cur.title;
   $('avMeta').innerHTML=`<b>${cur.sub}</b> · ${cur.tracks.length} songs · ${albLen(cur)}`;
   renderRows();
@@ -221,6 +226,13 @@ function playIdx(i){
   $('nbT').textContent=t[0];
   $('nbA').textContent='DJ Wayne J C — '+cur.title;
   $('nbBtn').textContent='⏸';
+  // animated cover — the track's 5s video loop (falls back to static art if none)
+  const slug=t[1].split('/').pop().replace('.mp3',''), hc=$('heroCover'), v=$('avVid');
+  hc.classList.remove('playing');
+  v.onerror=()=>{hc.classList.remove('playing');};
+  v.oncanplay=()=>{hc.classList.add('playing');v.play().catch(()=>{});};
+  v.src=AUD+'vid/'+cur.id+'/'+slug+'.mp4';
+  v.load();
   renderRows();
 }
 function togglePlay(){ if(audio.paused){audio.play().catch(()=>{});$('nbBtn').textContent='⏸';} else {audio.pause();$('nbBtn').textContent='▶';} }
