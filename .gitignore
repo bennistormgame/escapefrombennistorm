@@ -5,3 +5,4 @@ _optimise.mjs
 package-lock.json
 *.log
 .DS_Store
+_ogcard.mjs
