@@ -97,7 +97,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:38px 0;color:var(--mut)
   <div class="wrap">
     <div class="eyebrow">// the soundtrack</div>
     <h1>The Bennistorm <span class="grad">Soundtrack.</span></h1>
-    <p>Two original albums by <b>DJ Wayne J C</b> — synth-arcade character songs and a spy-jazz score, written for the heist. Tap any track to play.</p>
+    <p>Four original albums by <b>DJ Wayne J C</b> — synth-arcade character songs, rock anthems, a spy-jazz score and the specials. 43 tracks, written for the heist. Tap any track to play.</p>
     <div class="prevnote">🎧 30-second previews · full albums drop on Spotify &amp; Apple Music at launch</div>
   </div>
 </header>
@@ -155,6 +155,22 @@ const ALBUMS=[
    ['Benni Raves Again','retro/benni-raves-again.mp3','3:19','benni-raves-again'],
    ['Sally Takes You Back','retro/sally-takes-you-back.mp3','2:45','sally-takes-you-back'],
    ['One for the Road, Benni','retro/one-for-the-road-benni.mp3','3:13','one-for-the-road-benni']]},
+ {id:'rocks',title:'Bennistorm Rocks the House',sub:'Rock · Alternative · House',cover:'album-rocks.jpg',
+  tracks:[
+   ['Shizzy Got Busy','rocks/shizzy-got-busy.mp3','2:57','shizzy-got-busy'],
+   ['Roberto Toes the Line','rocks/roberto-toes-the-line.mp3','2:13','roberto-toes-the-line'],
+   ['Taking the Mikel T','rocks/taking-the-mikel-t.mp3','2:47','taking-the-mikel-t'],
+   ['Denny Bees Knees','rocks/denny-bees-knees.mp3','3:07','denny-bees-knees'],
+   ["Don't Be So Flash",'rocks/dont-be-so-flash.mp3','3:07','dont-be-so-flash'],
+   ['JohnnyB Good to the World','rocks/johnnyb-good-to-the-world.mp3','2:48','johnnyb-good-to-the-world'],
+   ["The Cheeks Don't Lie",'rocks/the-cheeks-dont-lie.mp3','2:40','the-cheeks-dont-lie'],
+   ['Granny Bakes the Pies','rocks/granny-bakes-the-pies.mp3','3:14','granny-bakes-the-pies'],
+   ['Luckyballs Never Leaves','rocks/luckyballs-never-leaves.mp3','2:42','luckyballs-never-leaves'],
+   ['Where Are You, Rusty?','rocks/where-are-you-rusty.mp3','2:37','where-are-you-rusty'],
+   ['Mrs B to the Point','rocks/mrs-b-to-the-point.mp3','1:44','mrs-b-to-the-point'],
+   ["Priceman's Revenge",'rocks/pricemans-revenge.mp3','2:32','pricemans-revenge'],
+   ['Nicks Well Today','rocks/nicks-well-today.mp3','2:14','nicks-well-today'],
+   ['Tel Me Harder','rocks/tel-me-harder.mp3','2:30','tel-me-harder']]},
  {id:'summer',title:'Summer Days and Bennistorm Nights',sub:'Spy-Jazz · The Original Score',cover:'album-summer.jpg',
   tracks:[
    ["Marshy's Midnight Perimeter Check",'summer/marshys-midnight-perimeter-check.mp3','3:19','marshys-midnight-perimeter-check'],
@@ -162,12 +178,17 @@ const ALBUMS=[
    ["Billy's Deadline Chase",'summer/billys-deadline-chase.mp3','2:57','billys-deadline-chase'],
    ['The Escape of Mr Branks','summer/the-escape-of-mr-branks.mp3','3:03','the-escape-of-mr-branks'],
    ['Randall Stays on the Dancefloor','summer/randall-stays-on-the-dancefloor.mp3','2:42','randall-stays-on-the-dancefloor'],
+   ["Sam Da Man's Great Escape",'summer/sam-da-mans-great-escape.mp3','3:18','sam-da-mans-great-escape'],
    ['Shakeys Ring Sting','summer/shakeys-ring-sting.mp3','3:06','shakeys-ring-sting'],
    ['Take Your Time Tamerier','summer/take-your-time-tamerier.mp3','2:34','take-your-time-tamerier'],
    ['RichyB Loves a Cup of Tea','summer/richyb-loves-a-cup-of-tea.mp3','2:55','richyb-loves-a-cup-of-tea'],
-   ['The Breezy Bride','summer/the-breezy-bride.mp3','2:47','the-breezy-bride'],
-   ['Light Beams, Love Beams','summer/light-beams-love-beams.mp3','4:05',null],
-   ['Chimmy Churi','summer/chimmy-churi.mp3','2:35',null]]}
+   ['The Breezy Bride','summer/the-breezy-bride.mp3','2:47','the-breezy-bride']]},
+ {id:'bennistormers',title:'Bennistormers',sub:'Special Tracks &amp; Extras',cover:'album-bennistormers.jpg',
+  tracks:[
+   ['Light Beams, Love Beams','bennistormers/light-beams-love-beams.mp3','4:05',null],
+   ['Chimmy Churi','bennistormers/chimmy-churi.mp3','2:35',null],
+   ['Kiki No Like School','bennistormers/kiki-no-like-school.mp3','1:12','kiki-no-like-school'],
+   ['Kiki Still No Like School','bennistormers/kiki-still-no-like-school.mp3','2:26','kiki-still-no-like-school']]}
 ];
 let cur=null, idx=-1;
 const audio=new Audio();
