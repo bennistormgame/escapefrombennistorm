@@ -261,6 +261,9 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 .gmodal.open{display:flex}
 .gmwrap{position:relative;width:min(440px,96vw);height:min(86vh,840px);border-radius:18px;overflow:hidden;box-shadow:0 0 0 2px rgba(52,216,222,.45),0 30px 80px rgba(0,0,0,.7);background:#05030c}
 .gmwrap iframe{width:100%;height:100%;border:0;display:block}
+/* compact card when showing the "playable soon" panel (no game frame to fill the box) */
+.gmwrap.compact{height:auto;width:min(400px,94vw)}
+.gmwrap.compact .gmsoon{position:relative}
 /* "playable soon" panel (shown until the game is hosted) */
 .gmsoon{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:26px;background:radial-gradient(circle at 50% 28%,#1c1033,#05030c)}
 .gmsoon.show{display:flex}
@@ -622,10 +625,11 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   // Game lives at GAME_URL. Until it's hosted (still localhost) show the "playable soon" panel
   // instead of a broken frame. Flips to the real game automatically once GAME_URL is a hosted URL.
   const GAME_LIVE=!/localhost|127\.0\.0\.1/.test(GAME_URL);
+  const gmWrap=document.querySelector('.gmwrap');
   function openGame(src,title){
     gmT.textContent=title;
-    if(GAME_LIVE){gmSoon.classList.remove('show');gmF.style.display='block';gmF.src=src;}
-    else{gmF.src='';gmF.style.display='none';gmSoon.classList.add('show');}
+    if(GAME_LIVE){gmSoon.classList.remove('show');gmWrap.classList.remove('compact');gmF.style.display='block';gmF.src=src;}
+    else{gmF.src='';gmF.style.display='none';gmSoon.classList.add('show');gmWrap.classList.add('compact');}
     gm.classList.add('open');
   }
   function closeGame(){gm.classList.remove('open');gmF.src='';}
