@@ -28,6 +28,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/worlds/strip.jpg" fetchpriority="high"/>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@700&family=Lilita+One&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -68,7 +69,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:cent
 .brand{display:flex;align-items:center;gap:10px;font-family:'Bungee';font-size:14px}
 .brand img{width:34px;height:34px;border-radius:9px}
 .navlinks{display:flex;gap:24px;font-weight:600;font-size:15px;color:var(--mut)}
-.navlinks a:hover{color:var(--cyan)}
+.navlinks a:hover,.navlinks a.active{color:var(--cyan)}
+.navright{display:flex;align-items:center;gap:10px}
+.navtoggle{display:none;background:none;border:0;color:var(--ink);font-size:26px;line-height:1;cursor:pointer;padding:2px 8px}
 .btn{font-family:'Bungee';font-size:13px;border:none;cursor:pointer;border-radius:12px;padding:12px 20px;display:inline-flex;align-items:center;gap:8px;transition:transform .15s, box-shadow .15s}
 .btn:hover{transform:translateY(-3px) scale(1.03)}
 .btn-candy{background:linear-gradient(180deg,#ffd874,#ff9e1f);color:#3a1d00;box-shadow:0 6px 0 #b96d00,0 12px 22px rgba(255,158,31,.4)}
@@ -143,7 +146,12 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 .sc:hover img{transform:scale(1.12) rotate(-3deg)}
 .sc .nm{font-family:'Bungee';font-size:10px;margin-top:6px;color:#fff;letter-spacing:.3px}
 @media(max-width:1024px){.sgrid{grid-template-columns:repeat(4,1fr)}.stats{grid-template-columns:1fr 1fr}}
-@media(max-width:620px){.sgrid{grid-template-columns:repeat(3,1fr)}.navlinks{display:none}}
+@media(max-width:620px){.sgrid{grid-template-columns:repeat(3,1fr)}
+  .navtoggle{display:block}
+  .navlinks{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;gap:18px;background:rgba(10,6,18,.98);padding:22px 26px;border-bottom:1px solid rgba(162,79,192,.35);font-size:17px}
+  .navlinks.open{display:flex}
+  nav .btn-candy{padding:10px 13px;font-size:12px}
+}
 
 /* STORY */
 .story{background:var(--bg2)}
@@ -298,6 +306,8 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 .foot .badges{display:flex;gap:10px}
 .foot .badges span{border:1px solid rgba(52,216,222,.35);border-radius:9px;padding:8px 12px;font-family:'JetBrains Mono';font-size:11px}
 .credit{font-family:'JetBrains Mono';font-size:11px;color:#7d6aa0}
+.footlinks{display:flex;gap:18px;font-family:'JetBrains Mono';font-size:12px}
+.footlinks a{color:var(--cyan)}.footlinks a:hover{color:#fff}
 </style>
 </head>
 <body>
@@ -311,10 +321,13 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 <!-- NAV -->
 <nav>
   <div class="brand"><img src="assets/logo.png" alt=""/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></div>
-  <div class="navlinks">
-    <a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#story">Story</a><a href="#ost">Sounds</a>
+  <div class="navlinks" id="navLinks">
+    <a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#story">Story</a><a href="#ost">Sounds</a><a href="wayno.html">The Maker</a>
   </div>
-  <button class="btn btn-candy">★ WISHLIST</button>
+  <div class="navright">
+    <button class="btn btn-candy">★ WISHLIST</button>
+    <button class="navtoggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -468,6 +481,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   <div class="wrap foot">
     <div class="brand"><img src="assets/logo.png" style="width:30px;height:30px;border-radius:8px"/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></div>
     <div class="badges"><span>STEAM</span><span>GOOGLE PLAY</span><span>APP STORE</span></div>
+    <div class="footlinks"><a href="wayno.html">The Maker</a><a href="press.html">Press Kit</a><a href="#join">Wishlist</a></div>
     <div class="credit">© 2026 WJC · Wayne J C Gaming · A Wayne Conyers &amp; Sid Vane production</div>
   </div>
 </footer>
@@ -668,6 +682,17 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
     try{localStorage.setItem('ww_wishlist_email',v);}catch(_){}
     jf.innerHTML='<div class="joined">🎉 You’re on the list — we’ll shout the moment the doors open.</div>';
   });
+
+  // mobile menu toggle
+  const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks');
+  if(navToggle){
+    navToggle.addEventListener('click',()=>{const o=navLinks.classList.toggle('open');navToggle.setAttribute('aria-expanded',o);navToggle.textContent=o?'✕':'☰';});
+    navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navLinks.classList.remove('open');navToggle.setAttribute('aria-expanded','false');navToggle.textContent='☰';}));
+  }
+  // scroll-spy: highlight the nav link for the section in view
+  const spy=[...document.querySelectorAll('#navLinks a[href^="#"]')];
+  const spyIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){spy.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}}),{rootMargin:'-45% 0px -50% 0px'});
+  ['worlds','squad','story','ost'].forEach(id=>{const s=document.getElementById(id);if(s)spyIO.observe(s);});
 </script>
 </body>
 </html>

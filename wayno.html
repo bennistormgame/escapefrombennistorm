@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Story of Wayno — Building a Game from Scratch with AI | Wibbles &amp; Wobbles</title>
+<meta name="description" content="One director, no code, a crew of AI specialists. The human + AI story behind Wibbles &amp; Wobbles — Escape from Bennistorm: how a game got built from a blank screen."/>
+<link rel="icon" type="image/png" href="assets/logo.png"/>
+<link rel="apple-touch-icon" href="assets/logo.png"/>
+<meta name="theme-color" content="#0a0612"/>
+<link rel="canonical" href="https://wibbleswobbles.com/wayno.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Wibbles and Wobbles"/>
+<meta property="og:url" content="https://wibbleswobbles.com/wayno.html"/>
+<meta property="og:title" content="The Story of Wayno — a human + AI success story"/>
+<meta property="og:description" content="One director. No code. A crew of AI specialists. How Wibbles &amp; Wobbles got built from scratch."/>
+<meta property="og:image" content="https://wibbleswobbles.com/assets/og.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="The Story of Wayno — a human + AI success story"/>
+<meta name="twitter:description" content="One director. No code. A crew of AI. How the game got built."/>
+<meta name="twitter:image" content="https://wibbleswobbles.com/assets/og.jpg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@700&family=Lilita+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0612; --bg2:#130b22; --panel:#160d28;
+  --magenta:#ff4fa3; --cyan:#34d8de; --purple:#a24fc0; --blue:#5ec8ff;
+  --gold:#ffd24a; --ink:#f6eefc; --mut:#b9a6d6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Fredoka',system-ui,sans-serif;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+section{position:relative;scroll-margin-top:84px}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}html{scroll-behavior:auto}}
+a:focus-visible,button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.eyebrow{font-family:'JetBrains Mono';letter-spacing:4px;font-size:12px;text-transform:uppercase;color:var(--cyan)}
+.grad{background:linear-gradient(90deg,var(--magenta),var(--purple),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:12px 26px;background:rgba(10,6,18,.72);backdrop-filter:blur(12px);border-bottom:1px solid rgba(162,79,192,.25)}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Bungee';font-size:14px}
+.brand img{width:34px;height:34px;border-radius:9px}
+.navlinks{display:flex;gap:24px;font-weight:600;font-size:15px;color:var(--mut);align-items:center}
+.navlinks a:hover,.navlinks a.active{color:var(--cyan)}
+.tm{font-size:.55em;vertical-align:super;opacity:.8;margin-left:1px}
+.btn{font-family:'Bungee';font-size:13px;border:none;cursor:pointer;border-radius:12px;padding:12px 20px;display:inline-flex;align-items:center;gap:8px;transition:transform .15s, box-shadow .15s}
+.btn:hover{transform:translateY(-3px) scale(1.03)}
+.btn-candy{background:linear-gradient(180deg,#ffd874,#ff9e1f);color:#3a1d00;box-shadow:0 6px 0 #b96d00,0 12px 22px rgba(255,158,31,.4)}
+.btn-neon{background:transparent;color:var(--cyan);box-shadow:inset 0 0 0 2px var(--cyan)}
+.btn-neon:hover{background:rgba(52,216,222,.12)}
+
+/* HERO */
+header.phero{position:relative;min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:120px 20px 70px}
+.phero .pbg{position:absolute;inset:0;background:url('assets/worlds/oldtown.jpg') center/cover no-repeat;transform:scale(1.05)}
+.phero .pbg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(10,6,18,.35),rgba(10,6,18,.86) 75%),linear-gradient(180deg,rgba(10,6,18,.6),rgba(10,6,18,.2) 40%,var(--bg) 99%)}
+.phero .inner{position:relative;z-index:3;max-width:840px}
+.phero h1{font-family:'Bungee';font-size:clamp(34px,7vw,76px);line-height:1.02;margin:14px 0 8px}
+.namepill{display:inline-block;font-family:'Lilita One',sans-serif;padding:2px 22px;border-radius:999px;border:3px solid #ffd64a;color:#fff;-webkit-text-stroke:1.4px #1a0a2a;background:linear-gradient(180deg,#9bfcff,#15c6e6 55%,#0a7a92);box-shadow:0 5px 0 rgba(0,0,0,.4),0 0 26px rgba(255,200,50,.5),inset 0 3px 8px rgba(255,255,255,.5)}
+.phero .lede{font-size:clamp(16px,2.2vw,21px);color:#e7dcf6;max-width:640px;margin:18px auto 0;line-height:1.55}
+.phero .credit{margin-top:18px;font-family:'JetBrains Mono';font-size:12px;color:var(--gold);letter-spacing:1px}
+
+/* shells */
+.band{padding:88px 0;position:relative}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+h2.big{font-family:'Bungee';font-size:clamp(26px,4.6vw,46px);line-height:1.05;margin:10px 0 16px}
+.lead{font-size:clamp(16px,2vw,19px);color:#d9cdf0;max-width:760px;line-height:1.6}
+.lead+.lead{margin-top:14px}
+.note{font-family:'JetBrains Mono';font-size:12px;color:#8d7ab0;border-left:2px solid rgba(52,216,222,.4);padding:4px 0 4px 12px;margin-top:18px;font-style:italic}
+
+/* BIO row */
+.bio{display:grid;grid-template-columns:300px 1fr;gap:44px;align-items:center;margin-top:30px}
+.bioimg{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:1;background:radial-gradient(circle at 50% 35%,rgba(52,216,222,.25),rgba(162,79,192,.12) 70%,transparent);border:1px solid rgba(52,216,222,.3);display:flex;align-items:flex-end;justify-content:center}
+.bioimg img{width:92%;filter:drop-shadow(0 16px 22px rgba(0,0,0,.55))}
+.bioimg .ph{font-family:'JetBrains Mono';font-size:11px;color:#8d7ab0;position:absolute;top:12px;left:0;right:0;text-align:center}
+@media(max-width:720px){.bio{grid-template-columns:1fr;gap:24px}.bioimg{max-width:260px;margin:0 auto}}
+
+/* STAT BULLETS */
+.jstats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
+.jstat{border:1px solid rgba(162,79,192,.3);border-radius:18px;padding:24px 14px;text-align:center;background:linear-gradient(180deg,rgba(162,79,192,.08),rgba(52,216,222,.04));transition:transform .2s}
+.jstat:hover{transform:translateY(-6px)}
+.jstat .n{font-family:'Bungee';font-size:clamp(28px,4vw,40px);background:linear-gradient(180deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.jstat .l{font-family:'JetBrains Mono';font-size:11px;color:var(--mut);margin-top:8px;text-transform:uppercase;letter-spacing:1px;line-height:1.4}
+@media(max-width:760px){.jstats{grid-template-columns:1fr 1fr}}
+
+/* TIMELINE */
+.tl{margin-top:40px;display:grid;gap:18px}
+.step{display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:start;border:1px solid rgba(162,79,192,.25);border-radius:18px;padding:22px 22px;background:linear-gradient(180deg,rgba(255,79,163,.05),rgba(52,216,222,.03));transition:transform .2s}
+.step:hover{transform:translateX(6px)}
+.step .num{font-family:'Bungee';font-size:30px;color:var(--magenta);opacity:.7}
+.step h4{font-family:'Bungee';font-size:17px;color:var(--cyan);margin-bottom:7px}
+.step p{color:var(--mut);font-size:15px;line-height:1.55}
+
+/* CREW */
+.crewgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.cm{border-radius:18px;padding:22px 20px;background:linear-gradient(180deg,rgba(162,79,192,.1),rgba(52,216,222,.04));border:1px solid rgba(162,79,192,.3);transition:transform .2s}
+.cm:hover{transform:translateY(-6px)}
+.cm.human{border-color:rgba(255,210,74,.55);background:linear-gradient(180deg,rgba(255,210,74,.12),rgba(255,158,31,.04))}
+.cm .tag{font-family:'JetBrains Mono';font-size:10px;letter-spacing:1px;color:#0a0612;background:linear-gradient(90deg,var(--cyan),var(--magenta));display:inline-block;padding:4px 10px;border-radius:999px}
+.cm.human .tag{background:linear-gradient(90deg,#ffd874,#ff9e1f)}
+.cm h4{font-family:'Bungee';font-size:18px;margin:12px 0 4px}
+.cm .role{font-family:'JetBrains Mono';font-size:11px;color:var(--cyan);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.cm p{color:var(--mut);font-size:14px;line-height:1.5}
+@media(max-width:860px){.crewgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.crewgrid{grid-template-columns:1fr}}
+
+/* VISION / pull quote */
+.vision{text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(52,216,222,.12),transparent 60%),var(--bg2)}
+.pull{font-family:'Bungee';font-size:clamp(22px,3.6vw,38px);line-height:1.2;max-width:880px;margin:0 auto;letter-spacing:.5px}
+.vision .lead{margin:22px auto 0;text-align:center}
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+
+footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut);font-size:13px;background:var(--bg)}
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+.foot .brand{font-size:14px}
+.credit{font-family:'JetBrains Mono';font-size:11px;color:#7d6aa0}
+@media(max-width:620px){.navlinks{display:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt=""/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></a>
+  <div class="navlinks">
+    <a href="index.html#worlds">Worlds</a><a href="index.html#squad">The Squad</a><a href="index.html#story">Story</a><a href="wayno.html" class="active">The Maker</a>
+  </div>
+  <a class="btn btn-candy" href="index.html#join">★ WISHLIST</a>
+</nav>
+
+<header class="phero">
+  <div class="pbg"></div>
+  <div class="inner">
+    <div class="eyebrow">// the human behind the game</div>
+    <h1>THE STORY OF<br/><span class="namepill">WAYNO</span></h1>
+    <p class="lede">One bloke. No code. A crew of AI. And a whole town to escape. This is how <b>Wibbles &amp; Wobbles</b> went from a blank screen to a real, playable game — built from scratch.</p>
+    <div class="credit">A WJC · WAYNE J C GAMING STORY</div>
+  </div>
+</header>
+
+<!-- BIO -->
+<section class="band">
+  <div class="wrap reveal">
+    <div class="eyebrow">// meet the maker</div>
+    <h2 class="big">Not a coder. <span class="grad">A builder of ideas.</span></h2>
+    <div class="bio">
+      <div class="bioimg">
+        <div class="ph">[ your photo / avatar here ]</div>
+        <img src="assets/crew/wayno.png" alt="Wayno"/>
+      </div>
+      <div>
+        <p class="lead">Wayno is the director behind WJC · Wayne J C Gaming — and the human at the centre of Wibbles &amp; Wobbles. He didn't come from games. He didn't write the code. What he had was a clear vision, stubborn taste, and a refusal to let "I can't build that myself" be the end of the idea.</p>
+        <p class="lead">So he did the next best thing: he assembled a crew. Not of people — of AI specialists, each with a job, each pointed at the same goal. He directed. They built. The result is a full, polished game with 100 levels, a 34-strong cast and a cinematic story — made by one person who never opened a code editor.</p>
+        <p class="note">[ Wayno — drop a couple of personal lines here: where you're from, what you do, why you started. Kept blank on purpose so it's 100% you. ]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY STATS -->
+<section class="band" style="background:var(--bg2)">
+  <div class="wrap reveal">
+    <div class="eyebrow">// the journey in numbers</div>
+    <h2 class="big">From scratch, <span class="grad">by the numbers.</span></h2>
+    <div class="jstats">
+      <div class="jstat"><div class="n">0</div><div class="l">Lines of code<br/>hand-written</div></div>
+      <div class="jstat"><div class="n">1</div><div class="l">Human<br/>director</div></div>
+      <div class="jstat"><div class="n">6</div><div class="l">AI specialists<br/>in the crew</div></div>
+      <div class="jstat"><div class="n">100</div><div class="l">Levels<br/>built</div></div>
+      <div class="jstat"><div class="n">34</div><div class="l">Playable<br/>characters</div></div>
+      <div class="jstat"><div class="n">5</div><div class="l">Neon<br/>worlds</div></div>
+      <div class="jstat"><div class="n">8</div><div class="l">Original<br/>tracks</div></div>
+      <div class="jstat"><div class="n">1</div><div class="l">Full cinematic<br/>episode</div></div>
+    </div>
+    <p class="note">[ Add the headline you love most, Wayno — e.g. "built in __ months" or "live on TestFlight". I left timing out since I won't guess your dates. ]</p>
+  </div>
+</section>
+
+<!-- HOW IT HAPPENED -->
+<section class="band">
+  <div class="wrap reveal">
+    <div class="eyebrow">// how it happened</div>
+    <h2 class="big">From a blank screen to <span class="grad">Bennistorm.</span></h2>
+    <p class="lead">The short version of a long, stubborn climb. (Outline for now — the full story gets fleshed out as we go.)</p>
+    <div class="tl">
+      <div class="step"><div class="num">01</div><div><h4>THE IDEA</h4><p>A world, a cast of misfits and one impossible night out. No studio, no budget, no code — just a premise too good to leave in a notebook.</p></div></div>
+      <div class="step"><div class="num">02</div><div><h4>ASSEMBLE THE CREW</h4><p>Instead of hiring a team, Wayno built one out of AI — a strategist, a builder, a writer, a critic, a release engineer and a brand lead. Each given a name, a remit and a standard to hit.</p></div></div>
+      <div class="step"><div class="num">03</div><div><h4>BUILD THE GAME</h4><p>Level by level, character by character. 100 levels, 5 worlds, an arcade hidden inside the arcade, an original soundtrack and a full cinematic episode — directed, reviewed, polished, repeat.</p></div></div>
+      <div class="step"><div class="num">04</div><div><h4>SHIP IT</h4><p>Onto real phones, then toward Android and Steam — and this very site, built by the crew too. Episode One is the proof. It is not the end of the plan.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE CREW -->
+<section class="band" style="background:var(--bg2)">
+  <div class="wrap reveal">
+    <div class="eyebrow">// one human, a crew of ai</div>
+    <h2 class="big">The <span class="grad">crew.</span></h2>
+    <p class="lead">This isn't AI instead of people. It's one person, amplified — a director with a team that never sleeps, never loses the thread, and always shows up.</p>
+    <div class="crewgrid">
+      <div class="cm human"><span class="tag">HUMAN</span><h4>WAYNO</h4><div class="role">Director</div><p>The vision, the taste, the final word. Decides what's good enough — and what isn't.</p></div>
+      <div class="cm"><span class="tag">AI</span><h4>MARLOW</h4><div class="role">Strategy</div><p>Works out the right thing to build before a single thing gets built.</p></div>
+      <div class="cm"><span class="tag">AI</span><h4>MASON</h4><div class="role">Build</div><p>Turns ideas into a working game. The left hand that makes it real.</p></div>
+      <div class="cm"><span class="tag">AI</span><h4>SID VANE</h4><div class="role">Story</div><p>The crime-comedy script, the cast, the twists. Co-writer of the world.</p></div>
+      <div class="cm"><span class="tag">AI</span><h4>FINCH</h4><div class="role">Quality</div><p>The critic who lives by one rule: "Built ≠ Done." Nothing ships half-baked.</p></div>
+      <div class="cm"><span class="tag">AI</span><h4>VIOLET</h4><div class="role">Brand &amp; Growth</div><p>The world beyond the game — the look, the launch, and this very site.</p></div>
+    </div>
+    <p class="note">[ Porter (release engineer) and the wider crew can join the line-up too — say the word. ]</p>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="band vision">
+  <div class="wrap reveal">
+    <div class="eyebrow" style="display:block">// the bigger picture</div>
+    <h2 class="big" style="margin-bottom:24px">A success story, <span class="grad">human + AI.</span></h2>
+    <p class="pull">"You don't need a studio.<br/>You need a vision — and a crew that<br/>never stops building."</p>
+    <p class="lead">Wibbles &amp; Wobbles is a game. It's also a proof: that one determined person, with the right AI crew and a high bar, can build something real, fun and finished. The goal is a top-10 game — and a blueprint for anyone with an idea and no idea how to code.</p>
+    <div class="cta-row">
+      <a class="btn btn-candy" href="index.html#join">★ WISHLIST THE GAME</a>
+      <a class="btn btn-neon" href="index.html">← Back to Wibbles &amp; Wobbles</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="index.html"><img src="assets/logo.png" style="width:30px;height:30px;border-radius:8px"/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></a>
+    <div class="credit">© 2026 WJC · Wayne J C Gaming · A Wayne Conyers &amp; Sid Vane production</div>
+  </div>
+</footer>
+
+<script>
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
