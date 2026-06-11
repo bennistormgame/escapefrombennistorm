@@ -178,7 +178,8 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 
 /* IN ACTION diorama */
 .action{background:var(--bg)}
-.screen{position:relative;width:100%;aspect-ratio:16/9;max-height:72vh;border-radius:22px;overflow:hidden;box-shadow:0 0 0 2px rgba(52,216,222,.5),0 0 60px rgba(255,79,163,.22),0 30px 60px rgba(0,0,0,.5);margin-top:30px}
+.screen{position:relative;width:100%;aspect-ratio:920/492;max-height:74vh;border-radius:22px;overflow:hidden;box-shadow:0 0 0 2px rgba(52,216,222,.5),0 0 60px rgba(255,79,163,.22),0 30px 60px rgba(0,0,0,.5);margin-top:30px}
+.screen .gpvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#0a0612}
 .screen .abg{position:absolute;inset:-5%;background-size:cover;background-position:center;animation:pan 26s ease-in-out infinite alternate}
 @keyframes pan{from{transform:translateX(-2.5%) scale(1.08)}to{transform:translateX(2.5%) scale(1.08)}}
 .screen .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 62%,transparent 42%,rgba(10,6,18,.55))}
@@ -370,15 +371,12 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 <!-- IN ACTION -->
 <section class="band action" id="action">
   <div class="wrap reveal">
-    <div class="eyebrow">// see it move</div>
-    <h2 class="big">In <span class="grad">action.</span></h2>
-    <p class="lead">Chibi crew, painterly worlds, jelly bounce. Here's the vibe — and a screen-grab away from a social clip.</p>
-    <div class="screen" id="screen">
-      <div class="abg" style="background-image:url('assets/worlds/strip.jpg')"></div>
-      <div class="vig"></div>
-      <div class="hud">WAYNO &nbsp; <span class="score">SCORE 0</span></div>
-      <div class="runner"><img class="body" src="assets/crew/wayno.png" alt=""/></div>
-      <div class="tag">▶ live web preview · new art</div>
+    <div class="eyebrow">// real gameplay</div>
+    <h2 class="big">See it <span class="grad">in action.</span></h2>
+    <p class="lead">Actual gameplay from Episode One — Matty fighting through Level 1 of Bennistorm. Trap the narcs in jelly, grab the loot, suit up and keep moving.</p>
+    <div class="screen">
+      <video class="gpvid" src="assets/gameplay.mp4" poster="assets/gameplay-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+      <div class="tag">▶ real gameplay · Level 1</div>
     </div>
   </div>
 </section>
@@ -617,11 +615,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   ];
   document.getElementById('modeGrid').innerHTML=modes.map(([ic,h,st,p])=>`<div class="mode"><span class="pill ${st}">${st==='live'?'PLAYABLE':'COMING'}</span><div class="ic">${ic}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
-  // IN ACTION — drifting tokens + score tick
-  (function(){const scr=document.getElementById('screen');if(!scr)return;const toks=['🍒','🍰','⭐','🍌','💎','❤️'];
-    for(let i=0;i<6;i++){const e=document.createElement('div');e.className='token';e.textContent=toks[i%toks.length];e.style.left=(12+i*14)+'%';e.style.top=(18+(i%3)*20)+'%';e.style.animationDelay=(i*0.45)+'s';scr.appendChild(e);}
-    let s=0;const sc=scr.querySelector('.score');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){setInterval(()=>{s+=Math.floor(Math.random()*40+10);if(sc)sc.textContent='SCORE '+s.toLocaleString();},700);}
-  })();
+  // IN ACTION — now a real gameplay <video> (assets/gameplay.mp4); no JS needed.
 
   // ── STORY CLIPS + SOUNDBOARD → popup the real game ──
   const GAME_URL='http://localhost:5180/embed.html'; // DEV. At deploy → the game's hosted URL.
