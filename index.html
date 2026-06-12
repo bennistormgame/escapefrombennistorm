@@ -328,6 +328,49 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 .credit{font-family:'JetBrains Mono';font-size:11px;color:#7d6aa0}
 .footlinks{display:flex;gap:18px;font-family:'JetBrains Mono';font-size:12px}
 .footlinks a{color:var(--cyan)}.footlinks a:hover{color:#fff}
+
+/* ── SQUAD v2 — chibi in front, card tucked behind, click reveals both (Wayne 2026-06-12) ── */
+.sgrid{gap:24px}
+.poly{position:relative;aspect-ratio:3/4;cursor:pointer;background:none;box-shadow:none;border-radius:0;transform:none;overflow:visible}
+.poly .card{position:absolute;left:9%;right:-7%;top:15%;bottom:2%;border-radius:10px;overflow:hidden;transform:rotate(5deg);box-shadow:0 10px 22px rgba(0,0,0,.55),0 0 0 1px rgba(52,216,222,.18);background:#0c0716;transition:transform .25s,box-shadow .25s}
+.poly .card img{width:100%;height:100%;object-fit:cover;display:block}
+.poly .chibi{position:absolute;left:0;right:0;bottom:8%;margin:0 auto;height:82%;width:auto;object-fit:contain;z-index:2;filter:drop-shadow(0 12px 14px rgba(0,0,0,.55));transition:transform .25s}
+.poly .flip{position:absolute;top:13%;right:1%;z-index:3;font-family:'JetBrains Mono';font-size:8px;color:var(--cyan);background:rgba(10,6,18,.72);padding:3px 6px;border-radius:6px;opacity:0;transition:opacity .2s;pointer-events:none}
+.poly:hover .card{transform:rotate(9deg) translate(7%,-5%);box-shadow:0 16px 30px rgba(255,79,163,.28),0 0 0 1px rgba(52,216,222,.3)}
+.poly:hover .chibi{transform:translateY(-9px) scale(1.05)}
+.poly:hover .flip{opacity:.92}
+.poly.cardonly{aspect-ratio:3/4}
+.poly.cardonly .card{position:absolute;inset:0;left:0;right:0;top:0;bottom:0;transform:none;border-radius:12px}
+.poly.cardonly:hover .card{transform:translateY(-7px) scale(1.04)}
+.polyLB .polyLBcard{display:flex;gap:28px;align-items:center;justify-content:center;flex-wrap:wrap;max-width:min(880px,94vw)}
+.polyLB .lbchibi{max-height:72vh;max-width:38vw;filter:drop-shadow(0 18px 26px rgba(0,0,0,.6));animation:plbPop .22s cubic-bezier(.2,1.4,.4,1)}
+.polyLB .lbcard{max-height:82vh;max-width:min(420px,86vw);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.75),0 0 0 2px rgba(52,216,222,.45);animation:plbPop .22s cubic-bezier(.2,1.4,.4,1)}
+@media(max-width:680px){.polyLB .lbchibi{max-width:64vw;max-height:30vh}.polyLB .lbcard{max-height:52vh}}
+
+/* ── PLAY stage — dedicated, front-and-centre, plays the live demo inline ── */
+.playstage{position:relative;width:100%;aspect-ratio:920/492;max-height:74vh;border-radius:22px;overflow:hidden;box-shadow:0 0 0 2px rgba(52,216,222,.5),0 0 60px rgba(255,79,163,.22),0 30px 60px rgba(0,0,0,.5);margin-top:30px;background:#0a0612}
+.playstage .gpvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#0a0612}
+.playover{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(ellipse at 50% 60%,rgba(10,6,18,.25),rgba(10,6,18,.72))}
+.playbtn{font-size:clamp(14px,2.4vw,17px);padding:16px 28px}
+.playsub{font-family:'JetBrains Mono';font-size:12px;color:var(--cyan)}
+.playstage .tag{position:absolute;bottom:14px;right:16px;z-index:3;font-family:'JetBrains Mono';font-size:11px;color:var(--cyan);background:rgba(10,6,18,.6);padding:6px 10px;border-radius:8px}
+.playframe{position:absolute;inset:0;margin:auto;display:none;width:min(440px,94vw);height:100%;border:0;border-radius:0;background:#05030c;z-index:4}
+.playclose{position:absolute;top:0;right:0;z-index:6;display:none;background:rgba(255,46,147,.96);color:#fff;border:none;font-family:'Bungee';font-size:13px;padding:8px 13px;border-radius:0 0 0 12px;cursor:pointer}
+.playstage.live{aspect-ratio:auto;height:min(86vh,860px);background:radial-gradient(circle at 50% 30%,#1c1033,#05030c)}
+.playstage.live .playframe{display:block}
+.playstage.live .playclose{display:block}
+.playstage.live .playover,.playstage.live .gpvid,.playstage.live .tag{display:none}
+
+/* ── VIDEO CLIP lightbox — real cutscene playback + end strap (no game launch) ── */
+.vidLB{position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;background:rgba(4,2,10,.93);backdrop-filter:blur(6px);padding:20px}
+.vidLB.open{display:flex}
+.vidWrap{position:relative;width:min(900px,96vw);border-radius:18px;overflow:hidden;box-shadow:0 0 0 2px rgba(52,216,222,.45),0 30px 80px rgba(0,0,0,.7);background:#000}
+.vidPlayer{width:100%;max-height:86vh;display:block;background:#000}
+.vidClose{position:absolute;top:0;right:0;z-index:3;background:rgba(255,46,147,.96);color:#fff;border:none;font-family:'Bungee';font-size:13px;padding:8px 13px;border-radius:0 0 0 12px;cursor:pointer}
+.vidStrap{position:absolute;inset:0;z-index:2;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;background:radial-gradient(circle at 50% 40%,rgba(28,16,51,.94),rgba(5,3,12,.97));padding:24px}
+.vidStrap.show{display:flex;animation:plbIn .2s ease}
+.vsTitle{font-family:'Lilita One',sans-serif;font-size:clamp(22px,4vw,34px);color:#ffd64a;letter-spacing:1px}
+.vsRow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 </style>
 </head>
 <body>
@@ -342,7 +385,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 <nav>
   <div class="brand"><img src="assets/logo.png" alt=""/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></div>
   <div class="navlinks" id="navLinks">
-    <a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#story">Story</a><a href="#ost">Sounds</a><a href="wayno.html">The Maker</a>
+    <a href="#play">Play</a><a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#story">Story</a><a href="#ost">Sounds</a><a href="wayno.html">The Maker</a>
   </div>
   <div class="navright">
     <button class="btn btn-candy">★ WISHLIST</button>
@@ -387,14 +430,19 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   </div>
 </section>
 
-<!-- IN ACTION -->
-<section class="band action" id="action">
+<!-- PLAY — dedicated, front & centre -->
+<section class="band action" id="play">
   <div class="wrap reveal">
-    <div class="eyebrow">// real gameplay</div>
-    <h2 class="big">See it <span class="grad">in action.</span></h2>
-    <p class="lead">Actual gameplay from Episode One — Matty fighting through Level 1 of Bennistorm. Trap the runners in jelly, grab the loot, suit up and keep moving.</p>
-    <div class="screen">
-      <video class="gpvid" src="assets/gameplay.mp4" poster="assets/gameplay-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+    <div class="eyebrow">// play it now — free</div>
+    <h2 class="big">Play the first <span class="grad">10 levels.</span></h2>
+    <p class="lead">No download, no sign-up. Drop straight into Bennistorm as Matty, right here in your browser — trap the runners in jelly, grab the loot and fight your way out.</p>
+    <div class="playstage" id="playStage">
+      <video class="gpvid" id="playVid" src="assets/gameplay.mp4" poster="assets/gameplay-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+      <div class="playover" id="playOver">
+        <button class="btn btn-candy playbtn" id="playBtn">▶ PLAY LEVELS 1–10 FREE</button>
+        <div class="playsub">real demo · plays in your browser</div>
+      </div>
+      <button class="playclose" id="playClose">✕ CLOSE</button>
       <div class="tag">▶ real gameplay · Level 1</div>
     </div>
   </div>
@@ -504,8 +552,14 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   </div>
 </footer>
 
-<!-- SQUAD POLAROID POP-OUT -->
-<div class="polyLB" id="polyLB"><img id="polyLBimg" src="" alt="Squad member card"/><div class="plbHint">tap anywhere to close</div></div>
+<!-- SQUAD POP-OUT — chibi + card together -->
+<div class="polyLB" id="polyLB">
+  <div class="polyLBcard">
+    <img id="polyLBchibi" class="lbchibi" src="" alt=""/>
+    <img id="polyLBimg" class="lbcard" src="" alt="Squad member card"/>
+  </div>
+  <div class="plbHint">tap anywhere to close</div>
+</div>
 
 <!-- CHARACTER MODAL -->
 <div class="modal" id="charModal">
@@ -518,18 +572,16 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   </div>
 </div>
 
-<!-- GAME POPUP (iframes the real game) -->
-<div class="gmodal" id="gmodal">
-  <div class="gmwrap">
-    <div class="gmtitle" id="gmTitle"></div>
-    <button class="gmclose" id="gmClose">✕</button>
-    <iframe id="gmFrame" src="" title="Wibbles and Wobbles" allow="autoplay; fullscreen"></iframe>
-    <div class="gmsoon" id="gmSoon">
-      <div class="gmsoonInner">
-        <div class="gmsoonBadge">▶</div>
-        <h3>PLAYABLE SOON</h3>
-        <p>The clips, soundboard and 10-level demo all unlock with the game. Wishlist now and you'll be first through the door when Bennistorm opens.</p>
-        <button class="gmsoonBack" id="gmSoonBack">★ Back to the site</button>
+<!-- VIDEO CLIP lightbox — plays a real cutscene, ends on a strap -->
+<div class="vidLB" id="vidLB">
+  <div class="vidWrap">
+    <button class="vidClose" id="vidClose">✕</button>
+    <video id="vidPlayer" class="vidPlayer" playsinline controls preload="metadata"></video>
+    <div class="vidStrap" id="vidStrap">
+      <div class="vsTitle">More to come — Episode One</div>
+      <div class="vsRow">
+        <button class="btn btn-candy" id="vsWish">★ Wishlist</button>
+        <button class="btn btn-neon" id="vsPlay">▶ Play the demo</button>
       </div>
     </div>
   </div>
@@ -561,12 +613,21 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
       </div>
     </div>`).join('');
 
-  // squad — polaroid wall (the public 34; secret unlocks stay unspoiled)
+  // squad — chibi in front, card tucked behind; click pops BOTH so the card writing is readable (Wayne 2026-06-12)
   const SQUAD=['matty','wayno','denny','thekemp','missym','billy','richyb','grace','parker','flash','johnnyb','elliejelly','dannyb','marshy','shakey','bride','randall','greyham','relfyrelf','rusty','alf','cheggers','luckyballs','nicsis','cabbie','branks','fence','mikelt','rinser','ryaham','sam','tamerier','vikky','wetlips'];
-  document.getElementById('squadGrid').innerHTML=SQUAD.map((id,i)=>`<div class="poly" style="--r:${((i*37)%5)-2}deg"><img src="assets/squad/${id}.jpg" loading="lazy" alt="Squad member"/></div>`).join('');
-  // click a polaroid → pop it out big so the card writing is readable (Wayne 2026-06-12)
-  (function(){const lb=document.getElementById('polyLB'),lbi=document.getElementById('polyLBimg');
-    document.getElementById('squadGrid').addEventListener('click',e=>{const c=e.target.closest('.poly');if(!c)return;const im=c.querySelector('img');if(!im)return;lbi.src=im.src;lb.classList.add('open');});
+  const CHIBI_MAP={thekemp:'thekempster',grace:'gracie',cheggers:'chuggers',fence:'risstee'};
+  const NO_CHIBI=new Set(['rinser','vikky','wetlips']); // card-only fallback (no chibi art yet)
+  const chibiFor=id=>NO_CHIBI.has(id)?null:(CHIBI_MAP[id]||id);
+  document.getElementById('squadGrid').innerHTML=SQUAD.map(id=>{
+    const card=`assets/squad/${id}.jpg`, ch=chibiFor(id);
+    if(!ch)return `<div class="poly cardonly" data-card="${card}"><div class="card"><img src="${card}" loading="lazy" alt="Squad member card"/></div></div>`;
+    return `<div class="poly" data-card="${card}" data-chibi="assets/crew/${ch}.png"><div class="card"><img src="${card}" loading="lazy" alt="Squad member card"/></div><img class="chibi" src="assets/crew/${ch}.png" loading="lazy" alt=""/><div class="flip">see card ⤢</div></div>`;
+  }).join('');
+  (function(){const lb=document.getElementById('polyLB'),lbi=document.getElementById('polyLBimg'),lbc=document.getElementById('polyLBchibi');
+    document.getElementById('squadGrid').addEventListener('click',e=>{const c=e.target.closest('.poly');if(!c)return;
+      lbi.src=c.dataset.card||'';
+      if(c.dataset.chibi){lbc.src=c.dataset.chibi;lbc.style.display='';}else{lbc.style.display='none';}
+      lb.classList.add('open');});
     lb.addEventListener('click',()=>lb.classList.remove('open'));
     addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open');});
   })();
@@ -614,41 +675,47 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   ];
   document.getElementById('modeGrid').innerHTML=modes.map(([ic,h,st,p])=>`<div class="mode"><span class="pill ${st}">${st==='live'?'PLAYABLE':'COMING'}</span><div class="ic">${ic}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
-  // IN ACTION — now a real gameplay <video> (assets/gameplay.mp4); no JS needed.
-
-  // ── STORY CLIPS + SOUNDBOARD → popup the real game ──
+  // ── PLAY (dedicated, front & centre) — load the live demo inline ──
   const GAME_URL='https://ww-play.bennistormgame.workers.dev/embed'; // LIVE game (ww-play Worker)
+  const playStage=document.getElementById('playStage'),playVid=document.getElementById('playVid');
+  let playFrame=null;
+  function launchPlay(){
+    if(!playFrame){playFrame=document.createElement('iframe');playFrame.className='playframe';playFrame.title='Play Wibbles and Wobbles — demo';playFrame.allow='autoplay; fullscreen';playStage.appendChild(playFrame);}
+    if(playFrame.src!==GAME_URL+'?demo=1')playFrame.src=GAME_URL+'?demo=1';
+    playStage.classList.add('live');
+    try{playVid.pause();}catch(_){}
+  }
+  function closePlay(){playStage.classList.remove('live');if(playFrame)playFrame.src='';try{playVid.play();}catch(_){}}
+  function playDemo(){document.getElementById('play').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});launchPlay();}
+  document.getElementById('playBtn').addEventListener('click',launchPlay);
+  document.getElementById('playClose').addEventListener('click',closePlay);
+
+  // ── STORY CLIPS — real cutscene videos that end on a strap (these do NOT launch the game) ──
   const clips=[
-    {id:'intro',t:'THE STAG DO',s:'Episode One · the opening',thumb:'warmup'},
-    {id:'vig10',t:"DENNY'S LOCKUP",s:'Level 10 · a dodgy kebab shop',thumb:'afters'},
-    {id:'vig20',t:"RICHYB'S LOCKUP",s:'Level 20 · a hen-do party bus',thumb:'strip'},
+    {v:'stag-arrival',t:'THE STAG ARRIVES',s:'Episode One · the crew rolls in',poster:'assets/story/kempster.jpg'},
+    {v:'shakey-rescue',t:"SHAKEY'S RESCUE",s:'Spring a mate from the Outfit',poster:'assets/story/rave.jpg'},
+    {v:'level1-gameplay',t:'LEVEL 1 · REAL PLAY',s:'Matty vs Bennistorm',poster:'assets/gameplay-poster.jpg'},
   ];
   const locked=[['LEVEL 30','Karaoke bar'],['LEVEL 40','All-day pub'],['LEVEL 50','Tapas place'],['LEVEL 60','Silent disco'],['LEVEL 70','Conga line'],['LEVEL 80','Security hut'],['LEVEL 90','The penthouse'],['THE BOSSES','5 rescues']];
   document.getElementById('clipGrid').innerHTML =
-    clips.map(c=>`<div class="clip" data-clip="${c.id}"><div class="thumb" style="background-image:url('assets/worlds/${c.thumb}.jpg')"></div><div class="scrim2"></div><div class="pl">▶</div><div class="ci"><div class="t">${c.t}</div><div class="s">${c.s}</div></div></div>`).join('')
-    + locked.map(([lv,d])=>`<div class="clip locked" data-demo="1"><div class="lk"><div style="font-size:22px">🔒</div><div class="pg">▶ PLAY THE GAME</div><div class="lvl">${lv} · ${d}</div></div></div>`).join('');
+    clips.map(c=>`<div class="clip" data-v="assets/clips/${c.v}.mp4"><div class="thumb" style="background-image:url('${c.poster}')"></div><div class="scrim2"></div><div class="pl">▶</div><div class="ci"><div class="t">${c.t}</div><div class="s">${c.s}</div></div></div>`).join('')
+    + locked.map(([lv,d])=>`<div class="clip locked" data-play="1"><div class="lk"><div style="font-size:22px">🔒</div><div class="pg">▶ PLAY THE GAME</div><div class="lvl">${lv} · ${d}</div></div></div>`).join('');
+  // soundboard — the Inner Six → play the demo in the dedicated stage
   const six=[['johnnyb','JOHNNY B'],['thekempster','THE KEMPSTER'],['marshy','MARSHY'],['shakey','SHAKEY'],['flash','FLASH'],['chuggers','CHUGGERS']];
-  document.getElementById('sixGrid').innerHTML=six.map(([id,n])=>`<div class="sixb" data-demo="1"><img src="assets/crew/${id}.png" alt="${n}"/><div class="n">${n}</div></div>`).join('');
-  const gm=document.getElementById('gmodal'),gmF=document.getElementById('gmFrame'),gmT=document.getElementById('gmTitle'),gmSoon=document.getElementById('gmSoon');
-  // Game lives at GAME_URL. Until it's hosted (still localhost) show the "playable soon" panel
-  // instead of a broken frame. Flips to the real game automatically once GAME_URL is a hosted URL.
-  const GAME_LIVE=!/localhost|127\.0\.0\.1/.test(GAME_URL);
-  const gmWrap=document.querySelector('.gmwrap');
-  function openGame(src,title){
-    gmT.textContent=title;
-    if(GAME_LIVE){gmSoon.classList.remove('show');gmWrap.classList.remove('compact');gmF.style.display='block';gmF.src=src;}
-    else{gmF.src='';gmF.style.display='none';gmSoon.classList.add('show');gmWrap.classList.add('compact');}
-    gm.classList.add('open');
-  }
-  function closeGame(){gm.classList.remove('open');gmF.src='';}
-  document.getElementById('gmClose').addEventListener('click',closeGame);
-  document.getElementById('gmSoonBack').addEventListener('click',closeGame);
-  gm.addEventListener('click',e=>{if(e.target===gm)closeGame();});
-  addEventListener('keydown',e=>{if(e.key==='Escape')closeGame();});
+  document.getElementById('sixGrid').innerHTML=six.map(([id,n])=>`<div class="sixb"><img src="assets/crew/${id}.png" alt="${n}"/><div class="n">${n}</div></div>`).join('');
+  document.getElementById('sixGrid').addEventListener('click',playDemo);
+  // video clip lightbox — plays the mp4, shows a strap on end
+  const vlb=document.getElementById('vidLB'),vp=document.getElementById('vidPlayer'),vstrap=document.getElementById('vidStrap');
+  function openClip(src){vstrap.classList.remove('show');vp.src=src;vlb.classList.add('open');try{vp.currentTime=0;vp.play();}catch(_){}}
+  function closeClip(){vlb.classList.remove('open');try{vp.pause();}catch(_){}vp.removeAttribute('src');vp.load();vstrap.classList.remove('show');}
+  vp.addEventListener('ended',()=>vstrap.classList.add('show'));
+  document.getElementById('vidClose').addEventListener('click',closeClip);
+  vlb.addEventListener('click',e=>{if(e.target===vlb)closeClip();});
+  document.getElementById('vsWish').addEventListener('click',()=>{closeClip();document.getElementById('join').scrollIntoView({behavior:'smooth',block:'center'});});
+  document.getElementById('vsPlay').addEventListener('click',()=>{closeClip();playDemo();});
   document.getElementById('clipGrid').addEventListener('click',e=>{const c=e.target.closest('.clip');if(!c)return;
-    if(c.dataset.clip)openGame(GAME_URL+'?clip='+c.dataset.clip,(c.querySelector('.t')||{}).textContent||'CLIP');
-    else openGame(GAME_URL+'?demo=1','▶ PLAYABLE DEMO · LEVELS 1–10');});
-  document.getElementById('sixGrid').addEventListener('click',()=>openGame(GAME_URL+'?demo=1','▶ DEMO · LEVELS 1–10 · MATTY'));
+    if(c.dataset.v)openClip(c.dataset.v);else playDemo();});
+  addEventListener('keydown',e=>{if(e.key==='Escape'){closeClip();closePlay();}});
 
   // scroll reveal (unobserve once shown — lighter)
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
@@ -686,7 +753,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   // scroll-spy: highlight the nav link for the section in view
   const spy=[...document.querySelectorAll('#navLinks a[href^="#"]')];
   const spyIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){spy.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}}),{rootMargin:'-45% 0px -50% 0px'});
-  ['worlds','squad','story','ost'].forEach(id=>{const s=document.getElementById(id);if(s)spyIO.observe(s);});
+  ['play','worlds','squad','story','ost'].forEach(id=>{const s=document.getElementById(id);if(s)spyIO.observe(s);});
 </script>
 </body>
 </html>
