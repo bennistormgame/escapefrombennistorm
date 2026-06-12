@@ -139,9 +139,15 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 
 /* SQUAD */
 .squad{background:linear-gradient(180deg,var(--bg),var(--bg2))}
-.sgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:40px}
-.poly{border-radius:10px;overflow:hidden;transform:rotate(var(--r,0deg));transition:transform .2s, box-shadow .2s;box-shadow:0 8px 20px rgba(0,0,0,.5);background:#0c0716}
+.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:40px}
+.poly{border-radius:10px;overflow:hidden;transform:rotate(var(--r,0deg));transition:transform .2s, box-shadow .2s;box-shadow:0 8px 20px rgba(0,0,0,.5);background:#0c0716;cursor:pointer}
 .poly img{width:100%;display:block}
+.polyLB{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(6,3,12,.92);backdrop-filter:blur(8px);padding:20px;cursor:pointer}
+.polyLB.open{display:flex;animation:plbIn .18s ease}
+@keyframes plbIn{from{opacity:0}to{opacity:1}}
+.polyLB img{max-width:min(460px,92vw);max-height:88vh;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.75),0 0 0 2px rgba(52,216,222,.45);animation:plbPop .22s cubic-bezier(.2,1.4,.4,1)}
+@keyframes plbPop{from{transform:scale(.82)}to{transform:scale(1)}}
+.polyLB .plbHint{position:absolute;bottom:26px;left:0;right:0;text-align:center;color:#c9b8e8;font-size:13px;letter-spacing:.5px;opacity:.85;pointer-events:none}
 .poly:hover{transform:rotate(0deg) translateY(-8px) scale(1.06);box-shadow:0 16px 34px rgba(255,79,163,.35);position:relative;z-index:3}
 @media(max-width:1024px){.poly:hover{transform:translateY(-5px) scale(1.04)}}
 .sc{position:relative;border-radius:18px;padding:14px 8px 10px;text-align:center;background:radial-gradient(circle at 50% 35%,rgba(162,79,192,.22),rgba(52,216,222,.05) 70%,transparent);cursor:pointer;transition:transform .18s}
@@ -498,6 +504,9 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   </div>
 </footer>
 
+<!-- SQUAD POLAROID POP-OUT -->
+<div class="polyLB" id="polyLB"><img id="polyLBimg" src="" alt="Squad member card"/><div class="plbHint">tap anywhere to close</div></div>
+
 <!-- CHARACTER MODAL -->
 <div class="modal" id="charModal">
   <div class="mcard">
@@ -555,6 +564,12 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   // squad — polaroid wall (the public 34; secret unlocks stay unspoiled)
   const SQUAD=['matty','wayno','denny','thekemp','missym','billy','richyb','grace','parker','flash','johnnyb','elliejelly','dannyb','marshy','shakey','bride','randall','greyham','relfyrelf','rusty','alf','cheggers','luckyballs','nicsis','cabbie','branks','fence','mikelt','rinser','ryaham','sam','tamerier','vikky','wetlips'];
   document.getElementById('squadGrid').innerHTML=SQUAD.map((id,i)=>`<div class="poly" style="--r:${((i*37)%5)-2}deg"><img src="assets/squad/${id}.jpg" loading="lazy" alt="Squad member"/></div>`).join('');
+  // click a polaroid → pop it out big so the card writing is readable (Wayne 2026-06-12)
+  (function(){const lb=document.getElementById('polyLB'),lbi=document.getElementById('polyLBimg');
+    document.getElementById('squadGrid').addEventListener('click',e=>{const c=e.target.closest('.poly');if(!c)return;const im=c.querySelector('img');if(!im)return;lbi.src=im.src;lb.classList.add('open');});
+    lb.addEventListener('click',()=>lb.classList.remove('open'));
+    addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open');});
+  })();
   // character modal (used by the Outfit cards)
   const modal=document.getElementById('charModal');
   function openChar(c,vil){document.getElementById('mImg').src='assets/'+(vil?'villains':'crew')+'/'+c.id+'.png';document.getElementById('mName').textContent=c.nm;document.getElementById('mSp').textContent='★ '+c.sp;document.getElementById('mLine').textContent=c.ln;document.querySelector('.mcard').classList.toggle('vil',!!vil);modal.classList.add('open');}
