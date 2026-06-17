@@ -291,6 +291,35 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 @media(max-width:1024px){.arcgrid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:760px){.arcgrid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:480px){.arcgrid{grid-template-columns:repeat(2,1fr)}}
+/* PRICING / EDITIONS */
+.pbanner{margin:26px auto 0;max-width:680px;text-align:center;font-family:'Bungee';font-size:13px;line-height:1.5;color:#fff;padding:14px 20px;border-radius:14px;background:linear-gradient(180deg,rgba(255,79,163,.16),rgba(52,216,222,.1));border:1px solid rgba(52,216,222,.4);box-shadow:0 0 26px rgba(255,79,163,.2),inset 0 0 0 1px rgba(255,255,255,.04)}
+.pbanner b{color:var(--gold)}
+.psub{margin:42px 0 18px;font-family:'Bungee';font-size:15px;color:var(--ink);display:flex;align-items:center;gap:9px;justify-content:center;letter-spacing:.3px}
+.psub .pico{font-size:20px}
+.ptiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
+.ptiers.steam{grid-template-columns:repeat(4,1fr)}
+.ptier{position:relative;border-radius:18px;padding:24px 20px;background:linear-gradient(165deg,rgba(162,79,192,.12),rgba(52,216,222,.05));border:1px solid rgba(162,79,192,.3);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.ptier:hover{transform:translateY(-5px);box-shadow:0 14px 30px rgba(162,79,192,.25)}
+.ptier.best{border:1.5px solid var(--gold);background:linear-gradient(165deg,rgba(255,210,74,.16),rgba(255,79,163,.08));box-shadow:0 0 28px rgba(255,210,74,.22)}
+.ptier .pribbon{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-family:'Bungee';font-size:10px;letter-spacing:.5px;color:#3a1d00;background:linear-gradient(180deg,#ffd874,#ff9e1f);padding:4px 14px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.ptier .ptag{font-family:'Bungee';font-size:13px;color:var(--cyan);letter-spacing:.4px;line-height:1.2}
+.ptier.best .ptag{color:var(--gold)}
+.ptier .pprice{font-family:'Bungee';font-size:34px;color:#fff;margin:8px 0 2px;text-shadow:0 0 18px rgba(255,79,163,.4)}
+.ptier .psay{font-family:'JetBrains Mono';font-size:11px;color:var(--mut);margin-bottom:14px}
+.ptier .pfeat{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
+.ptier .pfeat li{position:relative;padding-left:22px;font-size:13px;line-height:1.4;color:var(--ink)}
+.ptier .pfeat li::before{content:'✦';position:absolute;left:0;top:0;color:var(--cyan)}
+.ptier.best .pfeat li::before{color:var(--gold)}
+.ptier.best .pfeat li b{color:var(--gold)}
+.ptier.sm{padding:18px 16px}
+.ptier.sm .pprice{font-size:26px}
+.ptier.sm .pfeat li{font-size:12px}
+.pupgrade{margin:22px auto 0;max-width:560px;text-align:center;font-family:'JetBrains Mono';font-size:13px;color:var(--ink);background:rgba(52,216,222,.08);border:1px dashed rgba(52,216,222,.4);border-radius:12px;padding:11px 16px}
+.pupgrade b{color:var(--cyan)}
+.pctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+.pfoot{text-align:center;font-family:'JetBrains Mono';font-size:11px;color:var(--mut);margin-top:20px;letter-spacing:.3px}
+@media(max-width:880px){.ptiers,.ptiers.steam{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.ptiers,.ptiers.steam{grid-template-columns:1fr}.ptier .pprice{font-size:30px}}
 /* SOUNDBOARD / WHO IS DENNY */
 .denny{text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(52,216,222,.14),transparent 60%),var(--bg)}
 .six{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
@@ -401,7 +430,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 <nav>
   <div class="brand"><img src="assets/logo.png" alt=""/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></div>
   <div class="navlinks" id="navLinks">
-    <a href="#play">Play</a><a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#arcade">Arcade</a><a href="#story">Story</a><a href="#ost">Sounds</a><a href="wayno.html">The Maker</a>
+    <a href="#play">Play</a><a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#arcade">Arcade</a><a href="#story">Story</a><a href="#ost">Sounds</a><a href="#pricing">Editions</a><a href="wayno.html">The Maker</a>
   </div>
   <div class="navright">
     <button class="btn btn-candy">★ WISHLIST</button>
@@ -556,6 +585,87 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
     <p class="lead">Four original albums by DJ Wayne J C — synth-arcade character songs, rock anthems, a spy-jazz score and the specials. 43 tracks, written for the heist.</p>
     <div class="ostAlbums" id="ostAlbums"></div>
     <a class="btn btn-candy" href="music.html" style="margin-top:30px">▶ OPEN THE JUKEBOX</a>
+  </div>
+</section>
+
+<!-- PRICING / EDITIONS -->
+<section class="band pricing" id="pricing">
+  <div class="wrap reveal">
+    <div class="eyebrow" style="text-align:center;display:block">// editions &amp; pricing</div>
+    <h2 class="big" style="text-align:center">Buy it once. <span class="grad">It's yours.</span></h2>
+    <div class="pbanner">🎮 Pay once · own it · <b>no ads, ever</b> · no paywalls · no in-app nonsense</div>
+    <p class="lead" style="margin:18px auto 0;text-align:center">Prices shown are <b>launch prices</b> — the game's in its wishlist / pre-register phase, so nothing's on sale just yet. Mobile and Steam are priced differently (different stores, different norms).</p>
+
+    <div class="psub"><span class="pico">📱</span> On mobile — Google Play &amp; App Store</div>
+    <div class="ptiers">
+      <div class="ptier">
+        <div class="ptag">FREE TASTER</div>
+        <div class="pprice">£0</div>
+        <div class="psay">Try before you escape</div>
+        <ul class="pfeat">
+          <li>Levels <b>1–20</b> + the story opening</li>
+          <li>Play as <b>Matty, Wayno &amp; Denny</b></li>
+          <li>Online leaderboards</li>
+        </ul>
+      </div>
+      <div class="ptier">
+        <div class="ptag">EPISODE ONE</div>
+        <div class="pprice">£1.99</div>
+        <div class="psay">The full game</div>
+        <ul class="pfeat">
+          <li>All <b>100 levels</b> across 5 neon worlds</li>
+          <li>The complete story + <b>every ending</b></li>
+          <li>The core crew, earned through play</li>
+          <li>The arcade (<b>21 cabinets</b>), chaos &amp; secret rooms</li>
+          <li>Continue wheel + level select</li>
+        </ul>
+      </div>
+      <div class="ptier best">
+        <div class="pribbon">★ BEST VALUE</div>
+        <div class="ptag">DELUXE CREW EDITION</div>
+        <div class="pprice">£4.99</div>
+        <div class="psay">Everything in Episode One, plus…</div>
+        <ul class="pfeat">
+          <li><b>6 exclusive crew</b> to play as</li>
+          <li><b>2-player co-op</b> — bring a mate</li>
+          <li><b>Speed Run</b> mode</li>
+          <li><b>Character Creator</b></li>
+          <li>The <b>jukebox</b> — all 43 tracks</li>
+          <li>Gold skins + leaderboard badge</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pupgrade">Already own Episode One? <b>Upgrade to Deluxe for £3</b> — never pay twice.</div>
+
+    <div class="psub" style="margin-top:46px"><span class="pico">🖥️</span> On Steam — PC</div>
+    <div class="ptiers steam">
+      <div class="ptier sm">
+        <div class="ptag">DEMO</div>
+        <div class="pprice">Free</div>
+        <ul class="pfeat"><li>The Levels 1–20 taster</li><li>Your way in — and the wishlist engine</li></ul>
+      </div>
+      <div class="ptier sm">
+        <div class="ptag">STANDARD EDITION</div>
+        <div class="pprice">£6.99</div>
+        <ul class="pfeat"><li>The complete game — <b>nothing held back</b></li><li>Co-op, Creator, Speed Run &amp; jukebox all included</li></ul>
+      </div>
+      <div class="ptier sm">
+        <div class="ptag">DELUXE EDITION</div>
+        <div class="pprice">£8.99</div>
+        <ul class="pfeat"><li>Standard + the <b>43-track soundtrack</b></li><li>Digital extras — wallpapers &amp; art</li></ul>
+      </div>
+      <div class="ptier sm">
+        <div class="ptag">SOUNDTRACK DLC</div>
+        <div class="pprice">£2.49</div>
+        <ul class="pfeat"><li>43 tracks across 4 albums</li><li>For anyone who owns Standard</li></ul>
+      </div>
+    </div>
+
+    <div class="pctas">
+      <button class="btn btn-candy" id="priceWishSteam">★ WISHLIST ON STEAM</button>
+      <button class="btn btn-neon" id="priceWishPlay">Pre-register on Play</button>
+    </div>
+    <p class="pfoot">No ads. No microtransactions. No grind to pay your way out of — just one game, bought once.</p>
   </div>
 </section>
 
@@ -786,7 +896,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 
   // store CTAs (nav + hero + ask) → glide to the sign-up and focus it
   const joinEl=document.getElementById('join'),emailEl=document.getElementById('joinEmail');
-  document.querySelectorAll('nav .btn, header .btn, .ask .cta-row .btn').forEach(b=>{
+  document.querySelectorAll('nav .btn, header .btn, .ask .cta-row .btn, .pricing .pctas .btn').forEach(b=>{
     b.addEventListener('click',()=>{joinEl.scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'center'});setTimeout(()=>{if(emailEl)emailEl.focus({preventScroll:true});},REDUCED?0:550);});
   });
 
