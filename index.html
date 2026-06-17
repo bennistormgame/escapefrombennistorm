@@ -273,8 +273,24 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 .clip.locked .lk{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:var(--mut)}
 .clip.locked .lk .pg{font-family:'Bungee';font-size:12px;color:var(--gold)}
 .clip.locked .lk .lvl{font-family:'JetBrains Mono';font-size:10px}
+.clip .cfull{position:absolute;top:8px;right:8px;z-index:3;font-family:'JetBrains Mono';font-size:9px;font-weight:bold;color:#0a0a0a;background:var(--gold);border-radius:6px;padding:2px 7px;letter-spacing:.5px;box-shadow:0 2px 8px rgba(0,0,0,.5)}
 @media(max-width:820px){.clipgrid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.clipgrid{grid-template-columns:1fr}}
+/* THE ARCADE — neon cabinet floor (portrait backdrops) */
+.arcgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:40px}
+.arc{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#0c0716;border:1px solid rgba(52,216,222,.25);box-shadow:0 6px 18px rgba(0,0,0,.5);transition:transform .2s,box-shadow .2s;cursor:default}
+.arc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s}
+.arc .ascrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,4,14,0) 45%,rgba(8,4,14,.92));z-index:1}
+.arc .an{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:10px 11px;text-align:left}
+.arc .an .t{font-family:'Bungee';font-size:12px;letter-spacing:.3px;line-height:1.05}
+.arc .an .s{font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);margin-top:3px;opacity:.9}
+.arc .num{position:absolute;top:7px;left:8px;z-index:2;font-family:'JetBrains Mono';font-size:9px;color:var(--gold);background:rgba(8,4,14,.7);border:1px solid rgba(255,210,74,.4);border-radius:6px;padding:1px 6px}
+.arc:hover{transform:translateY(-7px);box-shadow:0 16px 34px rgba(52,216,222,.3),0 0 0 1px rgba(52,216,222,.5)}
+.arc:hover img{transform:scale(1.08)}
+.arcnote{text-align:center;font-family:'JetBrains Mono';font-size:11px;color:var(--mut);margin-top:22px;letter-spacing:.5px}
+@media(max-width:1024px){.arcgrid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:760px){.arcgrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.arcgrid{grid-template-columns:repeat(2,1fr)}}
 /* SOUNDBOARD / WHO IS DENNY */
 .denny{text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(52,216,222,.14),transparent 60%),var(--bg)}
 .six{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
@@ -385,7 +401,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 <nav>
   <div class="brand"><img src="assets/logo.png" alt=""/> WIBBLES &amp; WOBBLES<sup class="tm">™</sup></div>
   <div class="navlinks" id="navLinks">
-    <a href="#play">Play</a><a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#story">Story</a><a href="#ost">Sounds</a><a href="wayno.html">The Maker</a>
+    <a href="#play">Play</a><a href="#worlds">Worlds</a><a href="#squad">The Squad</a><a href="#arcade">Arcade</a><a href="#story">Story</a><a href="#ost">Sounds</a><a href="wayno.html">The Maker</a>
   </div>
   <div class="navright">
     <button class="btn btn-candy">★ WISHLIST</button>
@@ -490,6 +506,17 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   </div>
 </section>
 
+<!-- THE ARCADE -->
+<section class="band arcade" id="arcade">
+  <div class="wrap reveal">
+    <div class="eyebrow">// the arcade within the arcade</div>
+    <h2 class="big">Step into <span class="grad">the Arcade.</span></h2>
+    <p class="lead">Hidden inside the game is a whole neon arcade — 21 playable cabinets (one secret), each its own little game. Sink a dart, work the tapper, survive the earthquake. Here's a look at the floor.</p>
+    <div class="arcgrid" id="arcadeGrid"></div>
+    <p class="arcnote">…and more behind the doors. Find them all in-game.</p>
+  </div>
+</section>
+
 <!-- STORY -->
 <section class="band story" id="story">
   <div class="wrap reveal">
@@ -505,7 +532,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   <div class="wrap reveal">
     <div class="eyebrow">// watch the story</div>
     <h2 class="big">The <span class="grad">cutscenes.</span></h2>
-    <p class="lead">Story beats straight from the game. The opening three are yours to watch — the rest, you'll have to escape Bennistorm to see.</p>
+    <p class="lead">Story beats straight from the game — including the full cinematic opening, playable right here. The rest, you'll have to escape Bennistorm to see.</p>
     <div class="clipgrid" id="clipGrid"></div>
   </div>
 </section>
@@ -675,16 +702,39 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   ];
   document.getElementById('modeGrid').innerHTML=modes.map(([ic,h,st,p])=>`<div class="mode"><span class="pill ${st}">${st==='live'?'PLAYABLE':'COMING'}</span><div class="ic">${ic}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
+  // ── THE ARCADE — neon cabinet floor (marketing backdrops, Wayne 2026-06-17) ──
+  const cabinets=[
+    ['the-strip','THE STRIP','Neon mile, full pelt'],
+    ['conga','CONGA','Snake the line — don’t break it'],
+    ['tapper','TAPPER','Pull the pints, keep the bar happy'],
+    ['darts','DARTS','Treble twenty or bust'],
+    ['the-set','THE SET','Hit the beat on the big stage'],
+    ['earthquake','EARTHQUAKE','Stack it before it shakes down'],
+    ['pizza','PIZZA','Slice, serve, survive the rush'],
+    ['scatter','SCATTER','Dodge the laser sweep'],
+    ['savage','SAVAGE','Last podium standing'],
+    ['the-stretch','THE STRETCH','Climb every floor'],
+    ['stack','STACK','Pile it high on the line'],
+    ['perimeter','PERIMETER','Hold the rooftop line'],
+    ['operation-wobble','OPERATION WOBBLE','Steady hands, steadier nerves'],
+    ['pop','POP','Pop the lot before the buzzer'],
+    ['the-watcher','THE WATCHER','Don’t blink'],
+  ];
+  document.getElementById('arcadeGrid').innerHTML=cabinets.map(([id,n,s],i)=>`<div class="arc"><img src="assets/arcade/${id}.jpg" loading="lazy" decoding="async" alt="${n} cabinet"/><div class="ascrim"></div><div class="num">${String(i+1).padStart(2,'0')}</div><div class="an"><div class="t">${n}</div><div class="s">${s}</div></div></div>`).join('');
+
   // ── PLAY (dedicated, front & centre) — load the live demo inline ──
   const GAME_URL='https://ww-play.bennistormgame.workers.dev/embed'; // LIVE game (ww-play Worker)
   const playStage=document.getElementById('playStage'),playVid=document.getElementById('playVid');
   let playFrame=null;
-  function launchPlay(){
-    if(!playFrame){playFrame=document.createElement('iframe');playFrame.className='playframe';playFrame.title='Play Wibbles and Wobbles — demo';playFrame.allow='autoplay; fullscreen';playStage.appendChild(playFrame);}
-    if(playFrame.src!==GAME_URL+'?demo=1')playFrame.src=GAME_URL+'?demo=1';
+  function launchEmbed(q){
+    if(!playFrame){playFrame=document.createElement('iframe');playFrame.className='playframe';playFrame.title='Wibbles and Wobbles';playFrame.allow='autoplay; fullscreen';playStage.appendChild(playFrame);}
+    const url=GAME_URL+'?'+q;
+    if(playFrame.src!==url)playFrame.src=url;
     playStage.classList.add('live');
     try{playVid.pause();}catch(_){}
   }
+  function launchPlay(){launchEmbed('demo=1');}
+  function playClipEmbed(q){document.getElementById('play').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});launchEmbed(q);}
   function closePlay(){playStage.classList.remove('live');if(playFrame)playFrame.src='';try{playVid.play();}catch(_){}}
   function playDemo(){document.getElementById('play').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});launchPlay();}
   document.getElementById('playBtn').addEventListener('click',launchPlay);
@@ -692,13 +742,18 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 
   // ── STORY CLIPS — real cutscene videos that end on a strap (these do NOT launch the game) ──
   const clips=[
+    {embed:'clip=intro',t:'THE FULL OPENING',s:'The complete cinematic intro · plays here',poster:'assets/story/hero-card.jpg',full:1},
     {v:'stag-arrival',t:'THE STAG ARRIVES',s:'Episode One · the crew rolls in',poster:'assets/story/kempster.jpg'},
     {v:'shakey-rescue',t:"SHAKEY'S RESCUE",s:'Spring a mate from the Outfit',poster:'assets/story/rave.jpg'},
+    {embed:'clip=vig10',t:'WORLD ONE · THE BEAT DROPS',s:'A mid-run story vignette · plays here',poster:'assets/story/housemates.jpg',full:1},
     {v:'level1-gameplay',t:'LEVEL 1 · REAL PLAY',s:'Matty vs Bennistorm',poster:'assets/gameplay-poster.jpg'},
+    {embed:'clip=vig20',t:'END OF THE STRIP',s:'The world-one turn · plays here',poster:'assets/story/boss-gaffer.jpg',full:1},
   ];
-  const locked=[['LEVEL 30','Karaoke bar'],['LEVEL 40','All-day pub'],['LEVEL 50','Tapas place'],['LEVEL 60','Silent disco'],['LEVEL 70','Conga line'],['LEVEL 80','Security hut'],['LEVEL 90','The penthouse'],['THE BOSSES','5 rescues']];
+  const locked=[['LEVEL 50','Tapas place'],['LEVEL 60','Silent disco'],['LEVEL 70','Conga line'],['LEVEL 80','Security hut'],['LEVEL 90','The penthouse'],['THE BOSSES','5 rescues']];
   document.getElementById('clipGrid').innerHTML =
-    clips.map(c=>`<div class="clip" data-v="assets/clips/${c.v}.mp4"><div class="thumb" style="background-image:url('${c.poster}')"></div><div class="scrim2"></div><div class="pl">▶</div><div class="ci"><div class="t">${c.t}</div><div class="s">${c.s}</div></div></div>`).join('')
+    clips.map(c=>{const badge=c.full?'<div class="cfull">▶ FULL CLIP</div>':'';
+      const attr=c.embed?`data-embed="${c.embed}"`:`data-v="assets/clips/${c.v}.mp4"`;
+      return `<div class="clip" ${attr}><div class="thumb" style="background-image:url('${c.poster}')"></div><div class="scrim2"></div>${badge}<div class="pl">▶</div><div class="ci"><div class="t">${c.t}</div><div class="s">${c.s}</div></div></div>`;}).join('')
     + locked.map(([lv,d])=>`<div class="clip locked" data-play="1"><div class="lk"><div style="font-size:22px">🔒</div><div class="pg">▶ PLAY THE GAME</div><div class="lvl">${lv} · ${d}</div></div></div>`).join('');
   // soundboard — the Inner Six → play the demo in the dedicated stage
   const six=[['johnnyb','JOHNNY B'],['thekempster','THE KEMPSTER'],['marshy','MARSHY'],['shakey','SHAKEY'],['flash','FLASH'],['chuggers','CHUGGERS']];
@@ -714,7 +769,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   document.getElementById('vsWish').addEventListener('click',()=>{closeClip();document.getElementById('join').scrollIntoView({behavior:'smooth',block:'center'});});
   document.getElementById('vsPlay').addEventListener('click',()=>{closeClip();playDemo();});
   document.getElementById('clipGrid').addEventListener('click',e=>{const c=e.target.closest('.clip');if(!c)return;
-    if(c.dataset.v)openClip(c.dataset.v);else playDemo();});
+    if(c.dataset.v)openClip(c.dataset.v);else if(c.dataset.embed)playClipEmbed(c.dataset.embed);else playDemo();});
   addEventListener('keydown',e=>{if(e.key==='Escape'){closeClip();closePlay();}});
 
   // scroll reveal (unobserve once shown — lighter)
