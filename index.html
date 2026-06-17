@@ -642,8 +642,8 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 
   // squad — chibi in front, card tucked behind; click pops BOTH so the card writing is readable (Wayne 2026-06-12)
   const SQUAD=['matty','wayno','denny','thekemp','missym','billy','richyb','grace','parker','flash','johnnyb','elliejelly','dannyb','marshy','shakey','bride','randall','greyham','relfyrelf','rusty','alf','cheggers','luckyballs','nicsis','cabbie','branks','fence','mikelt','rinser','ryaham','sam','tamerier','vikky','wetlips'];
-  const CHIBI_MAP={thekemp:'thekempster',grace:'gracie',cheggers:'chuggers',fence:'risstee',wetlips:'priceman'};
-  const NO_CHIBI=new Set(['rinser','vikky']); // card-only fallback (no caricature art yet)
+  const CHIBI_MAP={thekemp:'thekempster',grace:'gracie',cheggers:'chuggers',fence:'risstee',wetlips:'priceman',rinser:'telme'};
+  const NO_CHIBI=new Set(['vikky']); // card-only fallback (Mrs B — no transparent caricature yet)
   const chibiFor=id=>NO_CHIBI.has(id)?null:(CHIBI_MAP[id]||id);
   document.getElementById('squadGrid').innerHTML=SQUAD.map(id=>{
     const card=`assets/squad/${id}.jpg`, ch=chibiFor(id);
