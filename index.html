@@ -904,13 +904,27 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
     b.addEventListener('click',()=>{joinEl.scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'center'});setTimeout(()=>{if(emailEl)emailEl.focus({preventScroll:true});},REDUCED?0:550);});
   });
 
-  // sign-up form (client-side for now — connect a list service before launch)
+  // sign-up form → Web3Forms (delivers signups to bennistormgame@gmail.com)
   const jf=document.getElementById('joinForm');
-  if(jf)jf.addEventListener('submit',e=>{e.preventDefault();
+  const W3F_KEY='95a96403-b497-4517-b1d2-e2bf4d132818';
+  const joinedMsg='<div class="joined">🎉 You’re on the list — we’ll shout the moment the doors open.</div>';
+  if(jf)jf.addEventListener('submit',async e=>{e.preventDefault();
     const v=(emailEl.value||'').trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){emailEl.focus();emailEl.style.boxShadow='0 0 0 2px #ff5a5a';return;}
+    const btn=jf.querySelector('button[type=submit]'); const oldTxt=btn?btn.textContent:'';
+    if(btn){btn.disabled=true;btn.textContent='SENDING…';}
     try{localStorage.setItem('ww_wishlist_email',v);}catch(_){}
-    jf.innerHTML='<div class="joined">🎉 You’re on the list — we’ll shout the moment the doors open.</div>';
+    try{
+      const res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+        body:JSON.stringify({access_key:W3F_KEY,subject:'🎮 New Wibbles & Wobbles wishlist signup',from_name:'Wibbles & Wobbles',email:v,message:'New wishlist signup: '+v,botcheck:''})});
+      const data=await res.json().catch(()=>({}));
+      if(res.ok&&data.success){jf.innerHTML=joinedMsg;}
+      else{throw new Error(data.message||'submit failed');}
+    }catch(err){
+      if(btn){btn.disabled=false;btn.textContent=oldTxt||'JOIN THE LIST';}
+      let er=jf.querySelector('.joinErr'); if(!er){er=document.createElement('div');er.className='joinErr';er.style.cssText='margin-top:8px;font-family:JetBrains Mono,monospace;font-size:11px;color:#ff8a8a';jf.appendChild(er);}
+      er.textContent='Hmm, that didn’t go through — give it another tap?';
+    }
   });
 
   // mobile menu toggle
