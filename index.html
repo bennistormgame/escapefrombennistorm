@@ -290,6 +290,27 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 .arc:hover img{transform:scale(1.08)}
 .arcnote{text-align:center;font-family:'JetBrains Mono';font-size:11px;color:var(--mut);margin-top:22px;letter-spacing:.5px}
 .storyhook{text-align:center;font-family:'Bungee';font-size:clamp(15px,2.4vw,22px);color:var(--ink);margin:34px auto 0;max-width:640px;line-height:1.4;opacity:.95}
+/* ARCADE ANNIE host card */
+.annie{display:flex;gap:20px;align-items:center;margin:34px auto 0;max-width:760px;background:linear-gradient(180deg,rgba(255,79,163,.12),rgba(36,16,56,.6));border:2px solid var(--magenta);border-radius:18px;box-shadow:0 0 26px rgba(255,79,163,.25),inset 0 0 30px rgba(0,0,0,.4);padding:18px 22px}
+.annieArt{position:relative;flex:0 0 auto;width:140px;height:160px;border-radius:12px;overflow:hidden;background:radial-gradient(circle at 50% 38%,#2a1842,#0a0618 80%);border:1px solid rgba(162,79,192,.4)}
+.annieArt img{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);height:150px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.6))}
+.annieArt .annieTok{position:absolute;right:7px;bottom:8px;font-family:'JetBrains Mono';font-size:8px;font-weight:bold;color:#2a1810;background:var(--gold);border-radius:4px;padding:2px 5px;z-index:2}
+.annieBody{flex:1;min-width:0}
+.annieName{font-family:'Bungee';font-size:14px;color:var(--gold);letter-spacing:1px;text-shadow:0 0 8px rgba(255,79,163,.5)}
+.annieSpeech{font-family:'JetBrains Mono';font-size:12px;color:#2a1810;background:#f4ecd8;border-radius:10px;padding:9px 12px;margin:8px 0 12px;line-height:1.45;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.tokRow{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.tokDots{display:inline-flex;gap:5px}
+.tokDots i{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,210,74,.4)}
+.tokDots i.on{background:radial-gradient(circle at 40% 35%,#ffe89a,#ffb020);box-shadow:0 0 8px rgba(255,176,32,.7)}
+.tokReset{font-family:'JetBrains Mono';font-size:10px;color:var(--mut)}
+.arcEnter:disabled{opacity:.5;filter:grayscale(.4);cursor:not-allowed}
+@media(max-width:560px){.annie{flex-direction:column;text-align:center}.annieArt{width:120px;height:140px}.tokRow{justify-content:center}}
+/* ARCADE fullscreen launcher */
+.arcadeLB{position:fixed;inset:0;z-index:130;display:none;background:#05020c}
+.arcadeLB.open{display:flex;flex-direction:column}
+.arcadeClose{position:absolute;top:10px;right:12px;z-index:2;background:#330022;border:1px solid var(--magenta);color:#ff88cc;font-family:'JetBrains Mono';font-weight:bold;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:12px;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+.arcadeFrameWrap{flex:1;width:100%}
+.arcadeFrame,#arcadeFrame{width:100%;height:100%;border:0;display:block}
 @media(max-width:1024px){.arcgrid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:760px){.arcgrid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:480px){.arcgrid{grid-template-columns:repeat(2,1fr)}}
@@ -540,11 +561,21 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 <!-- THE ARCADE -->
 <section class="band arcade" id="arcade">
   <div class="wrap reveal">
-    <div class="eyebrow">// the arcade within the arcade</div>
-    <h2 class="big">Step into <span class="grad">the Arcade.</span></h2>
-    <p class="lead">Hidden inside the game is a whole neon arcade — 21 playable cabinets (one secret), each its own little game. Sink a dart, work the tapper, survive the earthquake. Here's a look at the floor.</p>
+    <div class="eyebrow">// annie's arcade · play it here</div>
+    <h2 class="big">Step onto <span class="grad">the floor.</span></h2>
+    <p class="lead">A whole neon arcade lives inside the game — <b>21 cabinets</b>, each its own little game, and you can play them right here. <b>Arcade Annie</b> runs the door: five free tokens a day, on the house. Beat your own high scores — she keeps them just between you two.</p>
+    <!-- ARCADE ANNIE — host / change booth -->
+    <div class="annie">
+      <div class="annieArt"><img src="assets/arcade-annie.png" alt="Arcade Annie" loading="lazy"/><span class="annieTok">🎟 TOKENS</span></div>
+      <div class="annieBody">
+        <div class="annieName">★ ARCADE ANNIE</div>
+        <div class="annieSpeech" id="annieSpeech">“Five tokens a day, on the house. Pick a cabinet — and don’t embarrass me.”</div>
+        <div class="tokRow"><span class="tokDots" id="tokDots"></span><span class="tokReset" id="tokReset"></span></div>
+        <button class="btn btn-candy arcEnter" id="enterArcade">▶ ENTER THE ARCADE</button>
+      </div>
+    </div>
     <div class="arcgrid" id="arcadeGrid"></div>
-    <p class="arcnote">…and more behind the doors. Find them all in-game.</p>
+    <p class="arcnote">Tap any cabinet to play — it costs one of Annie’s tokens. Scores save just to this device.</p>
   </div>
 </section>
 
@@ -727,6 +758,12 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   </div>
 </div>
 
+<!-- ARCADE — fullscreen launcher (loads the real in-game arcade via the embed) -->
+<div class="arcadeLB" id="arcadeLB">
+  <button class="arcadeClose" id="arcadeClose">✕ EXIT ARCADE</button>
+  <div class="arcadeFrameWrap"><iframe id="arcadeFrame" title="Bennistorm Arcade" allow="autoplay; fullscreen"></iframe></div>
+</div>
+
 <script>
   // hero crew lineup
   const heroes=['matty','wayno','thekempster','missym','billy','denny'];
@@ -838,6 +875,35 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
 
   // ── PLAY (dedicated, front & centre) — load the live demo inline ──
   const GAME_URL='https://ww-play.bennistormgame.workers.dev/embed'; // LIVE game (ww-play Worker)
+
+  // ── ARCADE ANNIE — daily tokens + launch the real in-game arcade (Wayne 2026-06-18) ──
+  // 5 tokens/day, reset 24h after the day's first token, stored per-device (localStorage).
+  // Each ENTER spends 1 token and opens the live Bennistorm Arcade (Annie + 21 cabinets +
+  // per-device high scores) via the embed. Personal-best only — nothing shared/online.
+  const ARC_MAX=5, ARC_DAY=864e5;
+  function arcTok(){let d={};try{d=JSON.parse(localStorage.getItem('ww_arc_tok')||'{}');}catch(_){}
+    const now=Date.now();
+    if(!d.day||(now-d.day)>=ARC_DAY){d={day:now,used:0};try{localStorage.setItem('ww_arc_tok',JSON.stringify(d));}catch(_){}}
+    return {left:Math.max(0,ARC_MAX-(d.used||0)),used:d.used||0,resetMs:(d.day+ARC_DAY)-now};}
+  function arcSpend(){let d={};try{d=JSON.parse(localStorage.getItem('ww_arc_tok')||'{}');}catch(_){}d.used=(d.used||0)+1;if(!d.day)d.day=Date.now();try{localStorage.setItem('ww_arc_tok',JSON.stringify(d));}catch(_){}}
+  function fmtReset(ms){const h=Math.floor(ms/36e5),m=Math.floor((ms%36e5)/6e4);return h>0?(h+'h '+m+'m'):(Math.max(1,m)+'m');}
+  function renderTokens(){const t=arcTok();
+    const dots=document.getElementById('tokDots');if(dots)dots.innerHTML=Array.from({length:ARC_MAX},(_,i)=>`<i class="${i<t.left?'on':''}"></i>`).join('');
+    const rs=document.getElementById('tokReset');if(rs)rs.textContent=t.left>0?(t.left+' of '+ARC_MAX+' tokens left · resets in '+fmtReset(t.resetMs)):('out of tokens · Annie tops you up in '+fmtReset(t.resetMs));
+    const btn=document.getElementById('enterArcade');if(btn){btn.disabled=t.left<=0;btn.textContent=t.left>0?'▶ ENTER THE ARCADE':'⏳ COME BACK TOMORROW';}
+    const sp=document.getElementById('annieSpeech');if(sp&&t.left<=0)sp.textContent='“That’s your lot for today, petal. Tokens are back in '+fmtReset(t.resetMs)+'.”';}
+  const arcLB=document.getElementById('arcadeLB'),arcFrame=document.getElementById('arcadeFrame');
+  function openArcadeLB(){const t=arcTok();
+    if(t.left<=0){renderTokens();const sp=document.getElementById('annieSpeech');if(sp)sp.textContent='“Out of tokens, love — back in '+fmtReset(t.resetMs)+'. Wishlist us while you wait, eh?”';return;}
+    arcSpend();renderTokens();
+    if(arcFrame&&arcFrame.src!==GAME_URL+'?arcade=1')arcFrame.src=GAME_URL+'?arcade=1';
+    arcLB.classList.add('open');document.body.style.overflow='hidden';}
+  function closeArcadeLB(){arcLB.classList.remove('open');if(arcFrame)arcFrame.src='about:blank';document.body.style.overflow='';renderTokens();}
+  renderTokens(); setInterval(renderTokens,60000);
+  document.getElementById('enterArcade').addEventListener('click',openArcadeLB);
+  document.getElementById('arcadeClose').addEventListener('click',closeArcadeLB);
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&arcLB.classList.contains('open'))closeArcadeLB();});
+  document.getElementById('arcadeGrid').addEventListener('click',e=>{if(e.target.closest('.arc'))openArcadeLB();});
   const playStage=document.getElementById('playStage'),playVid=document.getElementById('playVid');
   let playFrame=null;
   function launchEmbed(q){
