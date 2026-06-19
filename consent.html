@@ -53,8 +53,8 @@ button:disabled{opacity:.6;cursor:default}
     <form id="consentForm" novalidate>
       <label>Your real name <span class="req">*</span></label>
       <input type="text" id="realName" autocomplete="name" placeholder="e.g. Jane Smith">
-      <label>Your character's name in the game <span class="req">*</span></label>
-      <input type="text" id="charName" placeholder="e.g. Marshy">
+      <label>Your character's name in the game <span style="color:var(--mut);text-transform:none;letter-spacing:0">(optional — if you know it)</span></label>
+      <input type="text" id="charName" placeholder="Not sure? Leave it blank — we'll fill it in">
       <label>Your email <span style="color:var(--mut);text-transform:none;letter-spacing:0">— so we can send you a copy (optional)</span></label>
       <input type="email" id="email" autocomplete="email" placeholder="you@email.com">
       <label>Anything you'd like to add? <span style="color:var(--mut);text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -84,14 +84,14 @@ button:disabled{opacity:.6;cursor:default}
   function fail(msg,focusId){err.textContent=msg; if(focusId){var el=document.getElementById(focusId); if(el)el.focus();} return false;}
   function esc(s){return (s||'').replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
   function done(name,ch){
-    document.getElementById('card').innerHTML='<div class="done"><div class="big">🎉 Thank you, '+esc(name)+'!</div><p>Your consent for <strong>'+esc(ch)+'</strong> is recorded. We really appreciate it — see you in Bennistorm.</p></div>';
+    var line=ch?('Your consent for <strong>'+esc(ch)+'</strong> is recorded.'):'Your consent is recorded.';
+    document.getElementById('card').innerHTML='<div class="done"><div class="big">🎉 Thank you, '+esc(name)+'!</div><p>'+line+' We really appreciate it — see you in Bennistorm.</p></div>';
   }
   f.addEventListener('submit', async function(e){
     e.preventDefault();
     var name=val('realName'), ch=val('charName'), email=val('email'), note=val('note'), agree=document.getElementById('agree').checked;
     err.textContent='';
     if(!name) return fail('Please add your real name.','realName');
-    if(!ch) return fail('Please add your character name.','charName');
     if(email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail('That email doesn’t look right.','email');
     if(!agree) return fail('Please tick the box to confirm your consent.');
     btn.disabled=true; btn.textContent='SENDING…';
@@ -99,11 +99,11 @@ button:disabled{opacity:.6;cursor:default}
       var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
         body:JSON.stringify({
           access_key:W3F,
-          subject:'🖊 LIKENESS CONSENT — '+name+' (character: '+ch+')',
+          subject:'🖊 LIKENESS CONSENT — '+name+(ch?' (character: '+ch+')':' (character TBC)'),
           from_name:'WW Character Consent',
           email:email||'no-reply@wibbleswobbles.com',
           'Real name':name,
-          'Character in game':ch,
+          'Character in game':ch||'(not provided — to be assigned)',
           'Contact email':email||'(not provided)',
           'Notes':note||'(none)',
           'Consent given':'YES — confirmed happy for likeness/caricature to be used in Wibbles and Wobbles & its promotion, free of charge, withdrawable by email.',
