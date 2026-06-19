@@ -279,7 +279,11 @@ header.hero{position:relative;min-height:100vh;display:flex;flex-direction:colum
 @media(max-width:520px){.clipgrid{grid-template-columns:1fr}}
 /* THE ARCADE — neon cabinet floor (portrait backdrops) */
 .arcgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:40px}
-.arc{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#0c0716;border:1px solid rgba(52,216,222,.25);box-shadow:0 6px 18px rgba(0,0,0,.5);transition:transform .2s,box-shadow .2s;cursor:default}
+.arc{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#0c0716;border:1px solid rgba(52,216,222,.25);box-shadow:0 6px 18px rgba(0,0,0,.5);transition:transform .2s,box-shadow .2s;cursor:pointer}
+.arc .arcPlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.88);z-index:3;font-family:'Bungee';font-size:11px;color:#3a1d00;background:linear-gradient(180deg,#ffd874,#ff9e1f);padding:7px 13px;border-radius:20px;opacity:0;transition:opacity .15s,transform .15s;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.55);white-space:nowrap}
+.arc:hover .arcPlay{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.arcgrid.spent .arc{filter:grayscale(.55) brightness(.7);cursor:not-allowed}
+.arcgrid.spent .arc:hover .arcPlay{opacity:0}
 .arc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s}
 .arc .ascrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,4,14,0) 45%,rgba(8,4,14,.92));z-index:1}
 .arc .an{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:10px 11px;text-align:left}
@@ -579,19 +583,18 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   <div class="wrap reveal">
     <div class="eyebrow">// annie's arcade · play it here</div>
     <h2 class="big">Step onto <span class="grad">the floor.</span></h2>
-    <p class="lead">A whole neon arcade lives inside the game — <b>21 cabinets</b>, each its own little game, and you can play them right here. <b>Arcade Annie</b> runs the door: five free tokens a day, on the house. Beat your own high scores — she keeps them just between you two.</p>
+    <p class="lead">A whole neon arcade lives inside the game — <b>21 cabinets</b>, each its own little game. <b>Arcade Annie</b> gives you five free tokens a day, on the house — tap a cabinet below for a quick go on it. The full-length cabinets (and the rest) are waiting in the game.</p>
     <!-- ARCADE ANNIE — host / change booth -->
     <div class="annie">
       <div class="annieArt"><img src="assets/arcade-annie.png" alt="Arcade Annie" loading="lazy"/><span class="annieTok">🎟 TOKENS</span></div>
       <div class="annieBody">
         <div class="annieName">★ ARCADE ANNIE</div>
-        <div class="annieSpeech" id="annieSpeech">“Five tokens a day, on the house. Pick a cabinet — and don’t embarrass me.”</div>
+        <div class="annieSpeech" id="annieSpeech">“Five tokens a day, on the house. Tap a cabinet — one token a go.”</div>
         <div class="tokRow"><span class="tokDots" id="tokDots"></span><span class="tokReset" id="tokReset"></span></div>
-        <button class="btn btn-candy arcEnter" id="enterArcade">▶ ENTER THE ARCADE</button>
       </div>
     </div>
     <div class="arcgrid" id="arcadeGrid"></div>
-    <p class="arcnote">Tap any cabinet to play — it costs one of Annie’s tokens. Scores save just to this device.</p>
+    <p class="arcnote">Tap a cabinet for a quick taster — one token a go. Scores save just to this device; the full games are in Bennistorm.</p>
   </div>
 </section>
 
@@ -877,24 +880,25 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   document.getElementById('modeGrid').innerHTML=modes.map(([ic,h,st,p])=>`<div class="mode"><span class="pill ${st}">${pillLabel[st]||'COMING'}</span><div class="ic">${ic}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
 
   // ── THE ARCADE — neon cabinet floor (marketing backdrops, Wayne 2026-06-17) ──
+  // [slug, name, tagline, in-game ROOMS key] — clicking launches THAT game's shortened taster
   const cabinets=[
-    ['the-strip','THE STRIP','Neon mile, full pelt'],
-    ['conga','CONGA','Snake the line — don’t break it'],
-    ['tapper','TAPPER','Pull the pints, keep the bar happy'],
-    ['darts','DARTS','Treble twenty or bust'],
-    ['the-set','THE SET','Hit the beat on the big stage'],
-    ['earthquake','EARTHQUAKE','Stack it before it shakes down'],
-    ['pizza','PIZZA','Slice, serve, survive the rush'],
-    ['scatter','SCATTER','Dodge the laser sweep'],
-    ['savage','SAVAGE','Last podium standing'],
-    ['the-stretch','THE STRETCH','Climb every floor'],
-    ['stack','STACK','Pile it high on the line'],
-    ['perimeter','PERIMETER','Hold the rooftop line'],
-    ['operation-wobble','OPERATION WOBBLE','Steady hands, steadier nerves'],
-    ['pop','POP','Pop the lot before the buzzer'],
-    ['the-watcher','THE WATCHER','Don’t blink'],
+    ['the-strip','THE STRIP','Neon mile, full pelt','mg_asphalt'],
+    ['conga','CONGA','Snake the line — don’t break it','mg_conga'],
+    ['tapper','TAPPER','Pull the pints, keep the bar happy','mg_tapper'],
+    ['darts','DARTS','Treble twenty or bust','mg_pool'],
+    ['the-set','THE SET','Hit the beat on the big stage','mg_theset'],
+    ['earthquake','EARTHQUAKE','Stack it before it shakes down','mg_empires'],
+    ['pizza','PIZZA','Slice, serve, survive the rush','mg_pizza'],
+    ['scatter','SCATTER','Dodge the laser sweep','mg_scatter'],
+    ['savage','SAVAGE','Last podium standing','mg_millionaire'],
+    ['the-stretch','THE STRETCH','Climb every floor','mg_nynights'],
+    ['stack','STACK','Pile it high on the line','mg_tetris'],
+    ['perimeter','PERIMETER','Hold the rooftop line','mg_perimeter'],
+    ['operation-wobble','OPERATION WOBBLE','Steady hands, steadier nerves','mg_rail'],
+    ['pop','POP','Pop the lot before the buzzer','mg_pacman'],
+    ['the-watcher','THE WATCHER','Don’t blink','mg_doom'],
   ];
-  document.getElementById('arcadeGrid').innerHTML=cabinets.map(([id,n,s],i)=>`<div class="arc"><img src="assets/arcade/${id}.jpg" loading="lazy" decoding="async" alt="${n} cabinet"/><div class="ascrim"></div><div class="num">${String(i+1).padStart(2,'0')}</div><div class="an"><div class="t">${n}</div><div class="s">${s}</div></div></div>`).join('');
+  document.getElementById('arcadeGrid').innerHTML=cabinets.map(([id,n,s,key],i)=>`<div class="arc" data-key="${key}"><img src="assets/arcade/${id}.jpg" loading="lazy" decoding="async" alt="${n} cabinet"/><div class="ascrim"></div><div class="num">${String(i+1).padStart(2,'0')}</div><div class="arcPlay">▶ PLAY · 1🎟</div><div class="an"><div class="t">${n}</div><div class="s">${s}</div></div></div>`).join('');
 
   // ── PLAY (dedicated, front & centre) — load the live demo inline ──
   const GAME_URL='https://ww-play.bennistormgame.workers.dev/embed'; // LIVE game (ww-play Worker)
@@ -913,20 +917,21 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   function renderTokens(){const t=arcTok();
     const dots=document.getElementById('tokDots');if(dots)dots.innerHTML=Array.from({length:ARC_MAX},(_,i)=>`<i class="${i<t.left?'on':''}"></i>`).join('');
     const rs=document.getElementById('tokReset');if(rs)rs.textContent=t.left>0?(t.left+' of '+ARC_MAX+' tokens left · resets in '+fmtReset(t.resetMs)):('out of tokens · Annie tops you up in '+fmtReset(t.resetMs));
-    const btn=document.getElementById('enterArcade');if(btn){btn.disabled=t.left<=0;btn.textContent=t.left>0?'▶ ENTER THE ARCADE':'⏳ COME BACK TOMORROW';}
-    const sp=document.getElementById('annieSpeech');if(sp&&t.left<=0)sp.textContent='“That’s your lot for today, petal. Tokens are back in '+fmtReset(t.resetMs)+'.”';}
+    const sp=document.getElementById('annieSpeech');if(sp)sp.textContent=t.left>0?'“Five tokens a day, on the house. Tap a cabinet — one token a go.”':('“That’s your lot for today, petal. Tokens are back in '+fmtReset(t.resetMs)+'.”');
+    const g=document.getElementById('arcadeGrid');if(g)g.classList.toggle('spent',t.left<=0);}
   const arcLB=document.getElementById('arcadeLB'),arcFrame=document.getElementById('arcadeFrame');
-  function openArcadeLB(){const t=arcTok();
+  // play ONE cabinet's shortened taster (1 token); no arcade-room reveal
+  function playCabinet(key){const t=arcTok();
     if(t.left<=0){renderTokens();const sp=document.getElementById('annieSpeech');if(sp)sp.textContent='“Out of tokens, love — back in '+fmtReset(t.resetMs)+'. Wishlist us while you wait, eh?”';return;}
     arcSpend();renderTokens();
-    if(arcFrame&&arcFrame.src!==GAME_URL+'?arcade=1')arcFrame.src=GAME_URL+'?arcade=1';
+    const url=GAME_URL+'?arcade='+encodeURIComponent(key);
+    if(arcFrame&&arcFrame.src!==url)arcFrame.src=url;
     arcLB.classList.add('open');document.body.style.overflow='hidden';}
   function closeArcadeLB(){arcLB.classList.remove('open');if(arcFrame)arcFrame.src='about:blank';document.body.style.overflow='';renderTokens();}
   renderTokens(); setInterval(renderTokens,60000);
-  document.getElementById('enterArcade').addEventListener('click',openArcadeLB);
   document.getElementById('arcadeClose').addEventListener('click',closeArcadeLB);
   addEventListener('keydown',e=>{if(e.key==='Escape'&&arcLB.classList.contains('open'))closeArcadeLB();});
-  document.getElementById('arcadeGrid').addEventListener('click',e=>{if(e.target.closest('.arc'))openArcadeLB();});
+  document.getElementById('arcadeGrid').addEventListener('click',e=>{const c=e.target.closest('.arc');if(c&&c.dataset.key)playCabinet(c.dataset.key);});
   const playStage=document.getElementById('playStage'),playVid=document.getElementById('playVid');
   let playFrame=null;
   function launchEmbed(q){
