@@ -818,7 +818,7 @@ footer{border-top:1px solid rgba(162,79,192,.25);padding:42px 0;color:var(--mut)
   }).join('');
   // hidden crew — shown so visitors see the FULL roster, but NO spoilers on how to unlock (Wayne 2026-06-18)
   const HIDDEN=[['granny','GRANNY'],['nickswell','NICKS WELL'],['roberto','ROBERTO'],['shizzy','SHIZZY']];
-  document.getElementById('hiddenGrid').innerHTML=HIDDEN.map(([id,nm])=>`<div class="poly hidden" data-chibi="assets/crew/${id}.png"><img class="chibi" src="assets/crew/${id}.png" loading="lazy" alt="${nm}"/><span class="hcLock">🔒 UNLOCK</span><div class="hcName">${nm}</div></div>`).join('');
+  document.getElementById('hiddenGrid').innerHTML=HIDDEN.map(([id,nm])=>`<div class="poly hidden" data-card="assets/squad/${id}.jpg" data-chibi="assets/crew/${id}.png"><img class="chibi" src="assets/crew/${id}.png" loading="lazy" alt="${nm}"/><span class="hcLock">🔒 UNLOCK</span><div class="hcName">${nm}</div></div>`).join('');
   (function(){const lb=document.getElementById('polyLB'),lbi=document.getElementById('polyLBimg'),lbc=document.getElementById('polyLBchibi');
     function pop(c){
       if(c.dataset.card){lbi.src=c.dataset.card;lbi.style.display='';}else{lbi.style.display='none';}
