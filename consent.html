@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Character Consent · Wibbles and Wobbles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0612;--magenta:#ff4fa3;--cyan:#34d8de;--gold:#ffd24a;--ink:#f6eefc;--mut:#b9a6d6;--req:#ff7ac0}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% -5%,#1c0b32,#05020c 72%);color:var(--ink);font-family:'Fredoka',system-ui,sans-serif;line-height:1.5;padding:26px 16px 56px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:540px;margin:0 auto}
+.logo{text-align:center}
+.logo img{width:56px;height:56px;border-radius:13px;box-shadow:0 6px 18px rgba(255,79,163,.35)}
+h1{font-family:'Bungee';font-size:23px;text-align:center;margin:12px 0 2px;color:#fff;letter-spacing:.5px}
+.sub{text-align:center;color:var(--cyan);font-size:11px;font-family:'JetBrains Mono';letter-spacing:2px;margin-bottom:22px}
+.card{background:linear-gradient(180deg,rgba(36,16,56,.72),rgba(12,7,22,.92));border:1px solid rgba(162,79,192,.4);border-radius:20px;padding:24px;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.intro{font-size:15px;color:#ecdff7;margin:0 0 6px}
+label{display:block;font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:1.2px;color:var(--cyan);text-transform:uppercase;margin:16px 0 5px}
+.req{color:var(--req)}
+input[type=text],input[type=email],textarea{width:100%;background:#0c0716;border:1.5px solid rgba(162,79,192,.45);border-radius:11px;color:#fff;font-family:'Fredoka';font-size:16px;padding:12px 13px}
+input::placeholder,textarea::placeholder{color:#6f5e8c}
+input:focus,textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(52,216,222,.22)}
+textarea{min-height:64px;resize:vertical}
+.consent{margin:22px 0 4px;background:rgba(52,216,222,.06);border:1px solid rgba(52,216,222,.32);border-radius:14px;padding:15px 16px}
+.consent strong{font-family:'JetBrains Mono';font-size:11px;letter-spacing:1px;color:var(--gold);text-transform:uppercase}
+.consent ul{margin:9px 0 0;padding-left:18px;font-size:13.5px;color:#dcd0f2}
+.consent li{margin-bottom:7px}
+.check{display:flex;gap:11px;align-items:flex-start;margin-top:15px;font-size:15px;cursor:pointer;color:#fff}
+.check input{margin-top:3px;width:20px;height:20px;flex:0 0 auto;accent-color:var(--magenta);cursor:pointer}
+button{width:100%;margin-top:22px;font-family:'Bungee';font-size:15px;border:none;border-radius:14px;padding:15px;cursor:pointer;background:linear-gradient(180deg,#ffd874,#ff9e1f);color:#3a1d00;box-shadow:0 6px 0 #b96d0e;transition:transform .08s,box-shadow .08s}
+button:active{transform:translateY(4px);box-shadow:0 2px 0 #b96d0e}
+button:disabled{opacity:.6;cursor:default}
+.err{color:#ff9a9a;font-family:'JetBrains Mono';font-size:12.5px;margin-top:10px;min-height:16px;text-align:center}
+.done{text-align:center;padding:14px 6px}
+.done .big{font-family:'Bungee';font-size:21px;color:var(--gold);margin-bottom:8px}
+.done p{font-size:15px;color:#ecdff7}
+.foot{text-align:center;color:var(--mut);font-size:11px;font-family:'JetBrains Mono';margin-top:20px;line-height:1.6}
+.foot a{color:var(--cyan)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo"><img src="assets/logo.png" alt="Wibbles and Wobbles"></div>
+  <h1>Character Consent</h1>
+  <div class="sub">WIBBLES AND WOBBLES · ESCAPE FROM BENNISTORM</div>
+  <div class="card" id="card">
+    <p class="intro">You've been turned into a character in the game! 🎮</p>
+    <p class="intro" style="font-size:14px;color:#d6c8ee">Before we go live we just need your okay to use your likeness. Pop your details in, tick the box, and hit confirm — takes 20 seconds.</p>
+    <form id="consentForm" novalidate>
+      <label>Your real name <span class="req">*</span></label>
+      <input type="text" id="realName" autocomplete="name" placeholder="e.g. Jane Smith">
+      <label>Your character's name in the game <span class="req">*</span></label>
+      <input type="text" id="charName" placeholder="e.g. Marshy">
+      <label>Your email <span style="color:var(--mut);text-transform:none;letter-spacing:0">— so we can send you a copy (optional)</span></label>
+      <input type="email" id="email" autocomplete="email" placeholder="you@email.com">
+      <label>Anything you'd like to add? <span style="color:var(--mut);text-transform:none;letter-spacing:0">(optional)</span></label>
+      <textarea id="note" placeholder="Optional"></textarea>
+      <div class="consent">
+        <strong>By confirming, I agree that:</strong>
+        <ul>
+          <li>A character based on my likeness (a fun caricature) and the name above can appear in <em>Wibbles and Wobbles — Escape from Bennistorm</em> and its future episodes.</li>
+          <li>This includes use in the game and in its promotion — the website, social media, store pages and trailers.</li>
+          <li>The character is a light-hearted, fictional caricature for entertainment, not a factual portrayal of me.</li>
+          <li>I'm giving this permission free of charge, and I can withdraw it any time by emailing <strong>bennistormgame@gmail.com</strong> — the character will then be changed or removed from future updates.</li>
+          <li>I'm 18 or over (or a parent/guardian is confirming on a minor's behalf).</li>
+        </ul>
+        <label class="check"><input type="checkbox" id="agree"> <span>Yes — I've read the above and I'm happy for my likeness to be used. <span class="req">*</span></span></label>
+      </div>
+      <button type="submit" id="submitBtn">✓ CONFIRM MY CONSENT</button>
+      <div class="err" id="err"></div>
+    </form>
+  </div>
+  <div class="foot">A Wayne J C production · your details are used only to record this consent.<br>Questions? <a href="mailto:bennistormgame@gmail.com">bennistormgame@gmail.com</a></div>
+</div>
+<script>
+(function(){
+  var W3F='95a96403-b497-4517-b1d2-e2bf4d132818';
+  var f=document.getElementById('consentForm'), err=document.getElementById('err'), btn=document.getElementById('submitBtn');
+  function val(id){return (document.getElementById(id).value||'').trim();}
+  function fail(msg,focusId){err.textContent=msg; if(focusId){var el=document.getElementById(focusId); if(el)el.focus();} return false;}
+  function esc(s){return (s||'').replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
+  function done(name,ch){
+    document.getElementById('card').innerHTML='<div class="done"><div class="big">🎉 Thank you, '+esc(name)+'!</div><p>Your consent for <strong>'+esc(ch)+'</strong> is recorded. We really appreciate it — see you in Bennistorm.</p></div>';
+  }
+  f.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var name=val('realName'), ch=val('charName'), email=val('email'), note=val('note'), agree=document.getElementById('agree').checked;
+    err.textContent='';
+    if(!name) return fail('Please add your real name.','realName');
+    if(!ch) return fail('Please add your character name.','charName');
+    if(email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail('That email doesn’t look right.','email');
+    if(!agree) return fail('Please tick the box to confirm your consent.');
+    btn.disabled=true; btn.textContent='SENDING…';
+    try{
+      var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+        body:JSON.stringify({
+          access_key:W3F,
+          subject:'🖊 LIKENESS CONSENT — '+name+' (character: '+ch+')',
+          from_name:'WW Character Consent',
+          email:email||'no-reply@wibbleswobbles.com',
+          'Real name':name,
+          'Character in game':ch,
+          'Contact email':email||'(not provided)',
+          'Notes':note||'(none)',
+          'Consent given':'YES — confirmed happy for likeness/caricature to be used in Wibbles and Wobbles & its promotion, free of charge, withdrawable by email.',
+          'Confirmed at':new Date().toString(),
+          botcheck:''
+        })});
+      var d=await res.json().catch(function(){return {};});
+      if(res.ok && d.success){ done(name,ch); } else { throw new Error(d.message||'failed'); }
+    }catch(_){
+      btn.disabled=false; btn.textContent='✓ CONFIRM MY CONSENT';
+      err.textContent='Hmm, that didn’t send — please try again, or email bennistormgame@gmail.com.';
+    }
+  });
+})();
+</script>
+</body>
+</html>
